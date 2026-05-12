@@ -365,11 +365,16 @@ export default function KKFintax() {
               </div>
             </div>
           ) : (
-            <div style={{flex:"0 0 36%",order:2,position:"relative",overflow:"hidden"}}>
-              <img src={IMG.p1} alt="Bc. Kateřina Kerplová" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block"}}/>
-              <div style={{position:"absolute",bottom:0,left:0,right:0,background:"linear-gradient(transparent,rgba(15,23,42,.8))",padding:"40px 32px 28px"}}>
-                <div style={{color:"white",fontWeight:700,fontSize:15,...ser}}>Bc. Kateřina Kerplová</div>
-                <div style={{color:"rgba(255,255,255,.55)",fontSize:12,marginTop:3,...sf}}>Externí účetní</div>
+            <div style={{flex:"0 0 42%",order:2,alignSelf:"center",padding:"72px 40px 72px 0"}}>
+              <div style={{position:"relative"}}>
+                <div style={{position:"absolute",top:-14,right:-14,width:"100%",height:"100%",border:`2px solid rgba(139,0,0,.22)`,zIndex:0}}/>
+                <div style={{position:"relative",zIndex:1,overflow:"hidden",height:460}}>
+                  <img src={IMG.p1} alt="Bc. Kateřina Kerplová" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block"}}/>
+                  <div style={{position:"absolute",bottom:0,left:0,right:0,background:"linear-gradient(transparent,rgba(15,23,42,.88))",padding:"32px 20px 20px"}}>
+                    <div style={{color:"white",fontWeight:700,fontSize:15,...ser}}>Bc. Kateřina Kerplová</div>
+                    <div style={{color:"rgba(255,255,255,.6)",fontSize:12,marginTop:2,...sf}}>Externí účetní</div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
