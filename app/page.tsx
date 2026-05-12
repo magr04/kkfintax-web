@@ -312,7 +312,7 @@ export default function KKFintax() {
       <section style={{background:RED,minHeight:mob?520:640,position:"relative",overflow:"hidden"}}>
         <div style={{position:"absolute",inset:0,backgroundImage:"radial-gradient(circle, rgba(255,255,255,.18) 1px, transparent 1px)",backgroundSize:"28px 28px"}}/>
         <div style={{position:"relative",maxWidth:1152,margin:"0 auto",padding:mob?"56px 20px 48px":"88px 32px",display:"flex",alignItems:"center",gap:mob?0:72,minHeight:mob?520:640,flexDirection:mob?"column":"row"}}>
-          <div style={{flex:1,order:mob?2:1}}>
+          <div style={{flex:1,order:1}}>
             <div style={{display:"inline-flex",alignItems:"center",gap:9,background:"rgba(255,255,255,.12)",padding:"6px 14px",marginBottom:24,...sf}}>
               <div style={{width:7,height:7,background:"white",borderRadius:"50%"}}/>
               <span style={{color:"rgba(255,255,255,.9)",fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em"}}>Certifikovaná účetní · Praha & online</span>
@@ -334,7 +334,7 @@ export default function KKFintax() {
             </div>
           </div>
           {mob ? (
-            <div style={{width:"100%",maxWidth:280,margin:"0 auto 32px",order:1,position:"relative"}}>
+            <div style={{width:"100%",maxWidth:280,margin:"32px auto 0",order:2,position:"relative"}}>
               <img src={IMG.p1} alt="Bc. Kateřina Kerplová" style={{width:"100%",height:280,objectFit:"cover",objectPosition:"center top",display:"block"}}/>
               <div style={{position:"absolute",bottom:0,left:0,right:0,background:"linear-gradient(transparent,rgba(80,0,0,.85))",padding:"24px 14px 12px"}}>
                 <div style={{color:"white",fontWeight:700,fontSize:13,...ser}}>Bc. Kateřina Kerplová</div>
