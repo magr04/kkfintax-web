@@ -534,10 +534,9 @@ function ServiceRow({ icon, title, desc, num, mob, last }: { icon:string; title:
   const [hov, setHov] = useState(false);
   return (
     <div onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-      style={{display:"flex",gap:16,padding:mob?"20px 0":"28px 32px 28px 0",
+      style={{display:"flex",gap:16,padding:mob?"20px 0":"28px 32px",
         borderBottom: last ? "none" : `1px solid ${BORDER}`,
         borderRight: !mob && num%2===1 ? `1px solid ${BORDER}` : "none",
-        paddingLeft: !mob && num%2===0 ? 32 : 0,
         background: hov ? LGRAY : "white", transition:"background .15s"}}>
       <div style={{width:36,height:36,background:"rgba(139,0,0,.08)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2}}>
         <Icon name={icon} size={18} color={RED} sw={1.5}/>
