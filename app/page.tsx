@@ -42,6 +42,10 @@ const useW = () => {
 };
 
 const RED = "#8B0000";
+const DARK = "#0f172a";
+const MUTED = "#64748b";
+const BORDER = "#e2e8f0";
+const LGRAY = "#f8fafc";
 const sf: React.CSSProperties = { fontFamily: "'Helvetica Neue',Arial,sans-serif" };
 const ser: React.CSSProperties = { fontFamily: "Georgia,'Times New Roman',serif" };
 
@@ -55,6 +59,7 @@ const Btn = ({ children, variant = "primary", size = "md", onClick, style = {} }
     outline:      { bg:"transparent", hbg:"#8B0000", color:"#8B0000", hcolor:"white", border:"2px solid #8B0000" },
     white:        { bg:"white", hbg:"#f1f1f1", color:"#8B0000" },
     whiteOutline: { bg:"transparent", hbg:"rgba(255,255,255,.12)", color:"white", border:"2px solid rgba(255,255,255,.45)" },
+    dark:         { bg:DARK, hbg:"#1e293b", color:"white" },
   };
   const sizes: Record<string, React.CSSProperties> = {
     sm:{ height:34, padding:"0 16px", fontSize:13 },
@@ -97,7 +102,7 @@ function CalendlyWidget({ url, mob }: { url: string; mob: boolean }) {
   }, []);
   return (
     <div className="calendly-inline-widget" data-url={url}
-      style={{minWidth:320, height: mob ? 600 : 700, border:"1px solid #e5e7eb"}}/>
+      style={{minWidth:320, height: mob ? 600 : 700, border:`1px solid ${BORDER}`}}/>
   );
 }
 
@@ -130,13 +135,13 @@ function BookingPicker({ mob }: { mob: boolean }) {
           return (
             <button key={url} onClick={()=>setSelected(url)}
               onMouseEnter={()=>setHovCard(url)} onMouseLeave={()=>setHovCard(null)}
-              style={{textAlign:"left",padding:mob?20:28,border:`2px solid ${active?RED:hov?"#9ca3af":"#e5e7eb"}`,background:active?"rgba(139,0,0,.04)":hov?"#f9fafb":"white",cursor:"pointer",transition:"all .18s",outline:"none"}}>
+              style={{textAlign:"left",padding:mob?20:28,border:`2px solid ${active?RED:hov?"#94a3b8":BORDER}`,background:active?"rgba(139,0,0,.04)":hov?LGRAY:"white",cursor:"pointer",transition:"all .18s",outline:"none"}}>
               <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10,flexWrap:"wrap"}}>
-                <span style={{fontWeight:700,fontSize:mob?16:18,color:"#111",...ser}}>{label}</span>
+                <span style={{fontWeight:700,fontSize:mob?16:18,color:DARK,...ser}}>{label}</span>
                 <span style={{fontSize:11,fontWeight:700,textTransform:"uppercase" as const,letterSpacing:".08em",color:active?"white":RED,background:active?RED:"rgba(139,0,0,.08)",padding:"3px 9px",...sf}}>{tag}</span>
-                {price && <span style={{fontSize:13,fontWeight:600,color:"#6b7280",...sf}}>{price}</span>}
+                {price && <span style={{fontSize:13,fontWeight:600,color:MUTED,...sf}}>{price}</span>}
               </div>
-              <p style={{fontSize:14,color:"#6b7280",lineHeight:1.6,margin:0,...sf}}>{desc}</p>
+              <p style={{fontSize:14,color:MUTED,lineHeight:1.6,margin:0,...sf}}>{desc}</p>
               {active && <div style={{marginTop:14,fontSize:13,fontWeight:600,color:RED,...sf,display:"flex",alignItems:"center",gap:6}}>Vyberte termín níže <Icon name="arrow" size={14} color={RED} sw={2}/></div>}
             </button>
           );
@@ -163,7 +168,7 @@ function QuoteForm({ mob }: { mob: boolean }) {
   } : { name: false, email: false, entity: false };
 
   const inp = (hasErr: boolean): React.CSSProperties => ({
-    display:"block", width:"100%", height:42, border:`1px solid ${hasErr ? "#dc2626" : "#d1d5db"}`,
+    display:"block", width:"100%", height:42, border:`1px solid ${hasErr ? "#dc2626" : BORDER}`,
     background: hasErr ? "#fff5f5" : "white", padding:"0 12px", fontSize:14, ...sf, outline:"none", boxSizing:"border-box",
   });
   const sel = (hasErr: boolean): React.CSSProperties => ({
@@ -192,8 +197,8 @@ function QuoteForm({ mob }: { mob: boolean }) {
       <div style={{width:56,height:56,background:RED,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 18px"}}>
         <Icon name="check" size={26} color="white" sw={2.5}/>
       </div>
-      <h3 style={{...ser,fontSize:22,fontWeight:700,color:"#111",margin:"0 0 8px"}}>Poptávka odeslána</h3>
-      <p style={{...sf,color:"#6b7280",fontSize:14}}>Ozveme se do 24 hodin s individuální nabídkou.</p>
+      <h3 style={{...ser,fontSize:22,fontWeight:700,color:DARK,margin:"0 0 8px"}}>Poptávka odeslána</h3>
+      <p style={{...sf,color:MUTED,fontSize:14}}>Ozveme se do 24 hodin s individuální nabídkou.</p>
     </div>
   );
 
@@ -238,8 +243,8 @@ function QuoteForm({ mob }: { mob: boolean }) {
             return (
               <label key={s} onMouseEnter={()=>setHovSvc(s)} onMouseLeave={()=>setHovSvc(null)}
                 style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",cursor:"pointer",transition:"all .15s",
-                  border:`1px solid ${active?RED:hov?"#9ca3af":"#e5e7eb"}`,
-                  background:active?"rgba(139,0,0,.04)":hov?"#f9fafb":"white"}}>
+                  border:`1px solid ${active?RED:hov?"#94a3b8":BORDER}`,
+                  background:active?"rgba(139,0,0,.04)":hov?LGRAY:"white"}}>
                 <input type="checkbox" checked={active} onChange={()=>toggle(s)} style={{accentColor:RED,width:15,height:15,flexShrink:0}}/>
                 <span style={{...sf,fontSize:13,color:active?RED:"#374151",transition:"color .15s"}}>{s}</span>
               </label>
@@ -279,27 +284,39 @@ function FloatingCTA({ onClick }: { onClick: () => void }) {
   );
 }
 
+/* ── SECTION DIVIDER HELPER ─────────────────────────────────────── */
+function SectionLabel({ label }: { label: string }) {
+  return (
+    <div style={{display:"flex",alignItems:"center",gap:16,marginBottom:40}}>
+      <span style={{fontSize:10,color:RED,fontWeight:700,textTransform:"uppercase" as const,letterSpacing:".14em",flexShrink:0,...sf}}>{label}</span>
+      <div style={{flex:1,height:1,background:BORDER}}/>
+    </div>
+  );
+}
+
+/* ── MAIN PAGE ──────────────────────────────────────────────────── */
 export default function KKFintax() {
   const w = useW();
   const mob = w < 768;
   const go = (id: string) => document.getElementById(id)?.scrollIntoView({behavior:"smooth"});
 
   return (
-    <div style={{margin:0,padding:0,background:"#fff",...ser}}>
+    <div style={{margin:0,padding:0,background:"white",...sf}}>
       <FloatingCTA onClick={()=>go("booking")}/>
 
-      {/* NAV */}
-      <nav style={{position:"sticky",top:0,zIndex:50,background:"white",borderBottom:"1px solid #e5e7eb",boxShadow:"0 1px 8px rgba(0,0,0,.06)"}}>
-        <div style={{maxWidth:1152,margin:"0 auto",padding:"0 20px",height:64,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-          <img src={IMG.logo} alt="KKFintax" style={{height:36,width:"auto",objectFit:"contain",display:"block"}}/>
+      {/* ── NAV ── */}
+      <nav style={{position:"sticky",top:0,zIndex:50,background:"rgba(255,255,255,.96)",backdropFilter:"blur(12px)",borderBottom:`1px solid ${BORDER}`}}>
+        <div style={{maxWidth:1200,margin:"0 auto",padding:`0 ${mob?20:40}px`,height:68,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+          <img src={IMG.logo} alt="KKFintax" style={{height:34,width:"auto",objectFit:"contain",display:"block"}}/>
           {mob ? (
             <Btn variant="primary" size="md" onClick={()=>go("booking")}>Rezervovat schůzku <Icon name="arrow" size={14} sw={2}/></Btn>
           ) : (
-            <div style={{display:"flex",alignItems:"center",gap:28,...sf}}>
+            <div style={{display:"flex",alignItems:"center",gap:36,...sf}}>
               {[["Služby","services"],["O mně","about"],["Recenze","reviews"],["Poptávka","quote"],["Kontakt","contact"]].map(([l,id])=>(
-                <button key={id} onClick={()=>go(id)} style={{fontSize:14,color:"#4b5563",fontWeight:500,background:"none",border:"none",cursor:"pointer",padding:"4px 0",...sf}}
-                  onMouseEnter={e=>(e.currentTarget.style.color=RED)}
-                  onMouseLeave={e=>(e.currentTarget.style.color="#4b5563")}
+                <button key={id} onClick={()=>go(id)}
+                  style={{fontSize:14,color:MUTED,fontWeight:500,background:"none",border:"none",borderBottom:"1.5px solid transparent",cursor:"pointer",padding:"4px 0",transition:"all .18s",...sf}}
+                  onMouseEnter={e=>{e.currentTarget.style.color=DARK;e.currentTarget.style.borderBottomColor=RED;}}
+                  onMouseLeave={e=>{e.currentTarget.style.color=MUTED;e.currentTarget.style.borderBottomColor="transparent";}}
                 >{l}</button>
               ))}
               <Btn variant="primary" size="md" onClick={()=>go("booking")}>Rezervovat schůzku <Icon name="arrow" size={14} sw={2}/></Btn>
@@ -308,101 +325,88 @@ export default function KKFintax() {
         </div>
       </nav>
 
-      {/* HERO */}
-      <section style={{background:RED,minHeight:mob?520:640,position:"relative",overflow:"hidden"}}>
-        <div style={{position:"absolute",inset:0,backgroundImage:"radial-gradient(circle, rgba(255,255,255,.18) 1px, transparent 1px)",backgroundSize:"28px 28px"}}/>
-        <div style={{position:"relative",maxWidth:1152,margin:"0 auto",padding:mob?"56px 20px 48px":"88px 32px",display:"flex",alignItems:"center",gap:mob?0:72,minHeight:mob?520:640,flexDirection:mob?"column":"row"}}>
-          <div style={{flex:1,order:mob?2:1}}>
-            <div style={{display:"inline-flex",alignItems:"center",gap:9,background:"rgba(255,255,255,.12)",padding:"6px 14px",marginBottom:24,...sf}}>
-              <div style={{width:7,height:7,background:"white",borderRadius:"50%"}}/>
-              <span style={{color:"rgba(255,255,255,.9)",fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em"}}>Certifikovaná účetní · Praha & online</span>
+      {/* ── HERO ── white, editorial, dot pattern */}
+      <section style={{background:"white",minHeight:mob?560:700,position:"relative",overflow:"hidden",borderBottom:`1px solid ${BORDER}`}}>
+        <div style={{position:"absolute",inset:0,backgroundImage:"radial-gradient(circle, rgba(0,0,0,.065) 1px, transparent 1px)",backgroundSize:"28px 28px"}}/>
+        <div style={{position:"relative",maxWidth:1200,margin:"0 auto",display:"flex",flexDirection:mob?"column":"row",alignItems:"stretch",minHeight:mob?560:700}}>
+
+          {/* Left: text */}
+          <div style={{flex:"0 0 55%",padding:mob?"56px 20px 48px":"96px 48px 96px 40px",display:"flex",flexDirection:"column",justifyContent:"center",order:mob?2:1}}>
+            <div style={{display:"inline-flex",alignItems:"center",gap:8,marginBottom:28}}>
+              <div style={{width:28,height:2,background:RED}}/>
+              <span style={{fontSize:11,color:RED,fontWeight:700,textTransform:"uppercase" as const,letterSpacing:".12em",...sf}}>Certifikovaná účetní · Praha & online</span>
             </div>
-            <h1 style={{fontSize:mob?38:56,fontWeight:700,color:"white",lineHeight:1.12,margin:"0 0 20px",letterSpacing:"-.025em"}}>
-              Účetnictví,<br/>které dává<br/><span style={{color:"rgba(255,255,255,.38)"}}>smysl.</span>
+            <h1 style={{fontSize:mob?40:66,fontWeight:700,color:DARK,lineHeight:1.06,margin:"0 0 24px",letterSpacing:"-.03em",...ser}}>
+              Účetnictví,<br/>které dává<br/><em style={{fontStyle:"normal",color:RED}}>smysl.</em>
             </h1>
-            <p style={{fontSize:mob?15:17,color:"rgba(255,255,255,.78)",marginBottom:32,lineHeight:1.7,maxWidth:400,...sf}}>
+            <p style={{fontSize:mob?15:17,color:MUTED,marginBottom:36,lineHeight:1.78,maxWidth:460,...sf}}>
               Bc. Kateřina Kerplová — více než 8 let praxe, individuální přístup a srozumitelná komunikace. Bez překvapení.
             </p>
             <div style={{display:"flex",gap:12,flexWrap:"wrap"}}>
-              <Btn variant="white" size={mob?"md":"lg"} onClick={()=>go("booking")}>Naplánovat schůzku <Icon name="arrow" size={16} sw={2}/></Btn>
-              <Btn variant="whiteOutline" size={mob?"md":"lg"} onClick={()=>go("quote")}>Cenová nabídka</Btn>
+              <Btn variant="primary" size={mob?"md":"lg"} onClick={()=>go("booking")}>Naplánovat schůzku <Icon name="arrow" size={16} sw={2}/></Btn>
+              <Btn variant="outline" size={mob?"md":"lg"} onClick={()=>go("quote")}>Cenová nabídka</Btn>
             </div>
-            <div style={{display:"flex",gap:mob?28:44,marginTop:40,paddingTop:36,borderTop:"1px solid rgba(255,255,255,.18)",...sf}}>
+            <div style={{display:"flex",gap:mob?28:48,marginTop:48,paddingTop:36,borderTop:`1px solid ${BORDER}`}}>
               {[["8+","let praxe"],["50+","klientů"],["100%","online možné"]].map(([n,l])=>(
-                <div key={l}><div style={{fontSize:mob?22:28,fontWeight:700,color:"white"}}>{n}</div><div style={{fontSize:10,color:"rgba(255,255,255,.5)",textTransform:"uppercase",letterSpacing:".08em",marginTop:3}}>{l}</div></div>
+                <div key={l}>
+                  <div style={{fontSize:mob?24:34,fontWeight:700,color:DARK,...ser}}>{n}</div>
+                  <div style={{fontSize:10,color:MUTED,textTransform:"uppercase" as const,letterSpacing:".08em",marginTop:3,...sf}}>{l}</div>
+                </div>
               ))}
             </div>
           </div>
+
+          {/* Right: photo bleeds to edge */}
           {mob ? (
-            <div style={{width:"100%",maxWidth:280,margin:"0 auto 32px",order:1,position:"relative"}}>
-              <img src={IMG.p1} alt="Bc. Kateřina Kerplová" style={{width:"100%",height:280,objectFit:"cover",objectPosition:"center top",display:"block"}}/>
-              <div style={{position:"absolute",bottom:0,left:0,right:0,background:"linear-gradient(transparent,rgba(80,0,0,.85))",padding:"24px 14px 12px"}}>
-                <div style={{color:"white",fontWeight:700,fontSize:13,...ser}}>Bc. Kateřina Kerplová</div>
-                <div style={{color:"rgba(255,255,255,.62)",fontSize:11,marginTop:2,...sf}}>Externí účetní</div>
+            <div style={{order:1,width:"100%",maxWidth:320,margin:"0 auto 0",position:"relative"}}>
+              <div style={{position:"absolute",bottom:16,left:16,width:"calc(100% - 32px)",height:"calc(100% - 16px)",border:`2px solid ${RED}`,zIndex:0}}/>
+              <div style={{position:"relative",zIndex:1,overflow:"hidden",height:300}}>
+                <img src={IMG.p1} alt="Bc. Kateřina Kerplová" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block"}}/>
               </div>
             </div>
           ) : (
-            <div style={{flexShrink:0,position:"relative",width:300,order:2}}>
-              <div style={{position:"absolute",top:-14,left:-14,width:"100%",height:"100%",border:"2px solid rgba(255,255,255,.18)"}}/>
-              <div style={{position:"relative",zIndex:1,overflow:"hidden",height:460}}>
-                <img src={IMG.p1} alt="Bc. Kateřina Kerplová" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block"}}/>
-                <div style={{position:"absolute",bottom:0,left:0,right:0,background:"linear-gradient(transparent,rgba(80,0,0,.92))",padding:"28px 18px 18px"}}>
-                  <div style={{color:"white",fontWeight:700,fontSize:15,...ser}}>Bc. Kateřina Kerplová</div>
-                  <div style={{color:"rgba(255,255,255,.62)",fontSize:12,marginTop:2,...sf}}>Externí účetní</div>
-                </div>
+            <div style={{flex:"0 0 45%",order:2,position:"relative",overflow:"hidden"}}>
+              <img src={IMG.p1} alt="Bc. Kateřina Kerplová" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block"}}/>
+              <div style={{position:"absolute",bottom:0,left:0,right:0,background:"linear-gradient(transparent,rgba(15,23,42,.8))",padding:"40px 32px 28px"}}>
+                <div style={{color:"white",fontWeight:700,fontSize:15,...ser}}>Bc. Kateřina Kerplová</div>
+                <div style={{color:"rgba(255,255,255,.55)",fontSize:12,marginTop:3,...sf}}>Externí účetní</div>
               </div>
             </div>
           )}
         </div>
       </section>
 
-      {/* SERVICES */}
-      <section id="services" style={{padding:mob?"56px 0":"88px 0",background:"white"}}>
-        <div style={{maxWidth:1152,margin:"0 auto",padding:`0 ${mob?20:32}px`}}>
-          <p style={{fontSize:11,color:RED,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",marginBottom:12,...sf}}>Služby</p>
-          <h2 style={{fontSize:mob?28:38,fontWeight:700,color:"#111",margin:"0 0 14px"}}>Co pro vás mohu udělat</h2>
-          <p style={{color:"#6b7280",maxWidth:520,marginBottom:40,lineHeight:1.65,fontSize:15,...sf}}>Komplexní účetní služby pro OSVČ i s.r.o. — od každodenní evidence po zastupování před finančním úřadem.</p>
-          <div style={{display:"grid",gridTemplateColumns:mob?"1fr":w<1024?"1fr 1fr":"repeat(3,1fr)",gap:16}}>
-            {SERVICES.map(({icon,title,desc})=>(
-              <div key={title} style={{border:"1px solid #e5e7eb",padding:mob?20:26,transition:"all .2s",cursor:"default"}}
-                onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.borderColor=RED;(e.currentTarget as HTMLElement).style.boxShadow="0 4px 20px rgba(139,0,0,.1)";(e.currentTarget as HTMLElement).style.transform="translateY(-2px)";}}
-                onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.borderColor="#e5e7eb";(e.currentTarget as HTMLElement).style.boxShadow="none";(e.currentTarget as HTMLElement).style.transform="none";}}
-              >
-                <div style={{width:44,height:44,background:"rgba(139,0,0,.08)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:16}}>
-                  <Icon name={icon} size={22} color={RED} sw={1.5}/>
-                </div>
-                <h3 style={{fontWeight:700,color:"#111",margin:"0 0 8px",fontSize:15,...ser}}>{title}</h3>
-                <p style={{fontSize:14,color:"#6b7280",lineHeight:1.65,margin:0,...sf}}>{desc}</p>
-              </div>
+      {/* ── SERVICES ── numbered editorial list */}
+      <section id="services" style={{padding:mob?"56px 0":"96px 0",background:"white"}}>
+        <div style={{maxWidth:1200,margin:"0 auto",padding:`0 ${mob?20:40}px`}}>
+          <SectionLabel label="Služby"/>
+          <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:0}}>
+            {SERVICES.map(({icon,title,desc},i)=>(
+              <ServiceRow key={title} icon={icon} title={title} desc={desc} num={i+1} mob={mob} last={i>=SERVICES.length-2&&!mob}/>
             ))}
+          </div>
+          <div style={{marginTop:mob?32:48,display:"flex",gap:12}}>
+            <Btn variant="primary" onClick={()=>go("quote")}>Získat cenovou nabídku <Icon name="arrow" size={14} sw={2}/></Btn>
+            <Btn variant="outline" onClick={()=>go("booking")}>Rezervovat konzultaci</Btn>
           </div>
         </div>
       </section>
 
-      {/* ABOUT */}
-      <section id="about" style={{padding:mob?"56px 0":"88px 0",background:"white"}}>
-        <div style={{maxWidth:1152,margin:"0 auto",padding:`0 ${mob?20:32}px`,display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:mob?40:88,alignItems:"center"}}>
-          <div style={{position:"relative"}}>
-            <div style={{overflow:"hidden",height:mob?300:540}}>
-              <img src={IMG.p4} alt="Bc. Kateřina Kerplová" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block"}}/>
-            </div>
-            <div style={{position:"absolute",bottom:mob?-12:-18,right:mob?-8:-18,width:mob?100:148,height:mob?100:148,background:RED,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
-              <span style={{fontSize:mob?28:42,fontWeight:700,color:"white",lineHeight:1,...ser}}>8+</span>
-              <span style={{fontSize:9,color:"rgba(255,255,255,.6)",textTransform:"uppercase",letterSpacing:".08em",marginTop:4,...sf}}>let praxe</span>
-            </div>
-          </div>
+      {/* ── ABOUT ── text left, photo right */}
+      <section id="about" style={{background:LGRAY,padding:mob?"56px 0":"96px 0",borderTop:`1px solid ${BORDER}`,borderBottom:`1px solid ${BORDER}`}}>
+        <div style={{maxWidth:1200,margin:"0 auto",padding:`0 ${mob?20:40}px`,display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:mob?40:88,alignItems:"center"}}>
           <div>
-            <p style={{fontSize:11,color:RED,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",marginBottom:12,...sf}}>O mně</p>
-            <h2 style={{fontSize:mob?28:38,fontWeight:700,color:"#111",margin:"0 0 24px",lineHeight:1.18}}>Bc. Kateřina<br/>Kerplová</h2>
-            <div style={{color:"#4b5563",lineHeight:1.78,fontSize:14,...sf}}>
+            <SectionLabel label="O mně"/>
+            <h2 style={{fontSize:mob?30:44,fontWeight:700,color:DARK,margin:"0 0 8px",lineHeight:1.1,...ser}}>Bc. Kateřina</h2>
+            <h2 style={{fontSize:mob?30:44,fontWeight:700,color:RED,margin:"0 0 28px",lineHeight:1.1,...ser}}>Kerplová</h2>
+            <div style={{color:MUTED,lineHeight:1.82,fontSize:14,...sf}}>
               <p style={{marginTop:0}}>Účetnictvím se zabývám přes 8 let. Vystudovala jsem Obchodní akademii v Olomouci a obchodně-podnikatelskou školu v Opavě — již během studia jsem sbírala praxi jako pomocná účetní v různých firmách po celé ČR.</p>
               <p>Od roku 2020 se účetnictví věnuji naplno. Od května 2021 pracuji jako hlavní účetní a mzdová účetní, kde působím dodnes. Zkušenosti mám i z neziskového sektoru.</p>
-              <p>Věřím, že účetnictví nemusí být jen „nutné zlo" — může být oporou pro vaše podnikání.</p>
-              <p style={{fontWeight:600,color:"#1f2937"}}>Moje vize: stát se daňovým poradcem a nabídnout komplexnější servis.</p>
+              <p style={{fontWeight:600,color:DARK}}>Moje vize: stát se daňovým poradcem a nabídnout komplexnější servis.</p>
             </div>
             <div style={{display:"flex",flexWrap:"wrap",gap:7,margin:"22px 0 28px"}}>
               {["Vedení účetnictví","Mzdová účetní","Neziskový sektor","Online spolupráce","Individuální přístup"].map(t=>(
-                <span key={t} style={{padding:"4px 11px",fontSize:12,fontWeight:600,background:"rgba(139,0,0,.08)",color:RED,...sf}}>{t}</span>
+                <span key={t} style={{padding:"4px 11px",fontSize:12,fontWeight:600,border:`1px solid ${RED}`,color:RED,...sf}}>{t}</span>
               ))}
             </div>
             <div style={{display:"flex",gap:12,flexWrap:"wrap"}}>
@@ -410,47 +414,52 @@ export default function KKFintax() {
               <Btn variant="outline" onClick={()=>go("quote")}>Cenová nabídka</Btn>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* WHY ME */}
-      <section style={{background:RED,padding:mob?"48px 0":"64px 0"}}>
-        <div style={{maxWidth:1152,margin:"0 auto",padding:`0 ${mob?20:32}px`,display:"grid",gridTemplateColumns:mob?"1fr 1fr":"repeat(4,1fr)",gap:mob?24:36}}>
-          {[["lightbulb","Individuální přístup","Každý klient je jiný. Řešení šiji přímo na míru."],
-            ["chat","Srozumitelná komunikace","Žádný žargon. Vše vysvětlím lidsky a jasně."],
-            ["shield","Spolehlivost","Termíny dodržuji. Nic nezapomenu. Vždy dostupná."],
-            ["users","Online i osobně","Spolupracuji s klienty z celé ČR bez omezení."],
-          ].map(([icon,t,d])=>(
-            <div key={t} style={{textAlign:"center"}}>
-              <div style={{width:44,height:44,border:"1.5px solid rgba(255,255,255,.25)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 14px"}}>
-                <Icon name={icon} size={20} color="rgba(255,255,255,.85)" sw={1.5}/>
-              </div>
-              <h4 style={{fontWeight:700,color:"white",fontSize:mob?13:14,margin:"0 0 7px",...ser}}>{t}</h4>
-              <p style={{color:"rgba(255,255,255,.6)",fontSize:mob?12:13,lineHeight:1.6,margin:0,...sf}}>{d}</p>
+          <div style={{position:"relative"}}>
+            <div style={{overflow:"hidden",height:mob?300:560}}>
+              <img src={IMG.p4} alt="Bc. Kateřina Kerplová" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block"}}/>
             </div>
-          ))}
+            <div style={{position:"absolute",bottom:mob?-12:-20,left:mob?-8:-20,width:mob?100:140,height:mob?100:140,background:RED,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+              <span style={{fontSize:mob?28:42,fontWeight:700,color:"white",lineHeight:1,...ser}}>8+</span>
+              <span style={{fontSize:9,color:"rgba(255,255,255,.6)",textTransform:"uppercase" as const,letterSpacing:".08em",marginTop:4,...sf}}>let praxe</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* REVIEWS */}
-      <section id="reviews" style={{padding:mob?"56px 0":"88px 0",background:"#f9fafb",borderTop:"1px solid #e5e7eb"}}>
-        <div style={{maxWidth:1152,margin:"0 auto",padding:`0 ${mob?20:32}px`}}>
-          <p style={{fontSize:11,color:RED,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",marginBottom:12,...sf}}>Recenze</p>
-          <h2 style={{fontSize:mob?28:38,fontWeight:700,color:"#111",margin:"0 0 40px"}}>Co říkají klienti</h2>
-          <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"repeat(3,1fr)",gap:16}}>
+      {/* ── WHY ME ── white cards on white */}
+      <section style={{background:"white",padding:mob?"56px 0":"80px 0"}}>
+        <div style={{maxWidth:1200,margin:"0 auto",padding:`0 ${mob?20:40}px`}}>
+          <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"repeat(4,1fr)",gap:1,background:BORDER,border:`1px solid ${BORDER}`}}>
+            {[["lightbulb","Individuální přístup","Každý klient je jiný. Řešení šiji přímo na míru."],
+              ["chat","Srozumitelná komunikace","Žádný žargon. Vše vysvětlím lidsky a jasně."],
+              ["shield","Spolehlivost","Termíny dodržuji. Nic nezapomenu. Vždy dostupná."],
+              ["users","Online i osobně","Spolupracuji s klienty z celé ČR bez omezení."],
+            ].map(([icon,t,d])=>(
+              <WhyCard key={t} icon={icon} title={t} desc={d} mob={mob}/>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── REVIEWS ── editorial with left border */}
+      <section id="reviews" style={{padding:mob?"56px 0":"96px 0",background:LGRAY,borderTop:`1px solid ${BORDER}`}}>
+        <div style={{maxWidth:1200,margin:"0 auto",padding:`0 ${mob?20:40}px`}}>
+          <SectionLabel label="Recenze"/>
+          <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"repeat(3,1fr)",gap:mob?12:16}}>
             {REVIEWS.map(({name,role,text})=>(
-              <div key={name} style={{background:"white",border:"1px solid #e5e7eb",padding:mob?22:30}}>
-                <div style={{display:"flex",gap:3,marginBottom:18}}>
-                  {[1,2,3,4,5].map(i=><svg key={i} width="16" height="16" viewBox="0 0 24 24" fill={RED} stroke="none"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>)}
+              <div key={name} style={{background:"white",padding:mob?22:32,borderTop:`3px solid ${RED}`}}>
+                <div style={{fontSize:52,lineHeight:.8,color:"rgba(139,0,0,.12)",fontFamily:"Georgia,serif",fontWeight:700,marginBottom:12,userSelect:"none"}}>&ldquo;</div>
+                <div style={{display:"flex",gap:2,marginBottom:14}}>
+                  {[1,2,3,4,5].map(i=><svg key={i} width="14" height="14" viewBox="0 0 24 24" fill={RED} stroke="none"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>)}
                 </div>
-                <p style={{color:"#374151",fontSize:14,lineHeight:1.72,margin:"0 0 22px",...sf}}>{`„${text}"`}</p>
-                <div style={{display:"flex",alignItems:"center",gap:12,borderTop:"1px solid #f3f4f6",paddingTop:20}}>
-                  <div style={{width:36,height:36,background:RED,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                <p style={{color:"#374151",fontSize:14,lineHeight:1.78,margin:"0 0 24px",...sf}}>{`„${text}"`}</p>
+                <div style={{display:"flex",alignItems:"center",gap:12,paddingTop:18,borderTop:`1px solid ${BORDER}`}}>
+                  <div style={{width:36,height:36,background:DARK,borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
                     <span style={{color:"white",fontWeight:700,fontSize:14,...sf}}>{name[0]}</span>
                   </div>
                   <div>
-                    <div style={{fontWeight:700,color:"#111",fontSize:14,...ser}}>{name}</div>
-                    <div style={{color:"#9ca3af",fontSize:12,...sf}}>{role}</div>
+                    <div style={{fontWeight:700,color:DARK,fontSize:14,...ser}}>{name}</div>
+                    <div style={{color:MUTED,fontSize:12,...sf}}>{role}</div>
                   </div>
                 </div>
               </div>
@@ -460,54 +469,98 @@ export default function KKFintax() {
         </div>
       </section>
 
-      {/* BOOKING */}
-      <section id="booking" style={{padding:mob?"56px 0":"88px 0",background:"white",borderTop:"1px solid #e5e7eb"}}>
-        <div style={{maxWidth:1152,margin:"0 auto",padding:`0 ${mob?20:32}px`}}>
-          <p style={{fontSize:11,color:RED,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",marginBottom:12,...sf}}>Konzultace</p>
-          <h2 style={{fontSize:mob?28:38,fontWeight:700,color:"#111",margin:"0 0 32px"}}>Naplánujte si schůzku</h2>
+      {/* ── BOOKING ── */}
+      <section id="booking" style={{padding:mob?"56px 0":"96px 0",background:"white",borderTop:`1px solid ${BORDER}`}}>
+        <div style={{maxWidth:1152,margin:"0 auto",padding:`0 ${mob?20:40}px`}}>
+          <SectionLabel label="Konzultace"/>
+          <h2 style={{fontSize:mob?28:42,fontWeight:700,color:DARK,margin:"0 0 36px",...ser}}>Naplánujte si schůzku</h2>
           <BookingPicker mob={mob}/>
         </div>
       </section>
 
-      {/* QUOTE */}
-      <section id="quote" style={{padding:mob?"56px 0":"88px 0",background:"#f9fafb",borderTop:"1px solid #e5e7eb"}}>
+      {/* ── QUOTE ── */}
+      <section id="quote" style={{padding:mob?"56px 0":"96px 0",background:LGRAY,borderTop:`1px solid ${BORDER}`}}>
         <div style={{maxWidth:720,margin:"0 auto",padding:`0 ${mob?20:32}px`}}>
-          <p style={{fontSize:11,color:RED,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",marginBottom:12,...sf}}>Poptávka</p>
-          <h2 style={{fontSize:mob?28:38,fontWeight:700,color:"#111",margin:"0 0 12px"}}>Získejte cenovou nabídku</h2>
-          <p style={{color:"#6b7280",fontSize:15,marginBottom:32,...sf}}>Vyplňte formulář a do 24 hodin připravím nabídku přímo na míru.</p>
-          <div style={{background:"white",border:"1px solid #e5e7eb",padding:mob?20:40}}>
+          <SectionLabel label="Poptávka"/>
+          <h2 style={{fontSize:mob?28:42,fontWeight:700,color:DARK,margin:"0 0 12px",...ser}}>Získejte cenovou nabídku</h2>
+          <p style={{color:MUTED,fontSize:15,marginBottom:36,...sf}}>Vyplňte formulář a do 24 hodin připravím nabídku přímo na míru.</p>
+          <div style={{background:"white",border:`1px solid ${BORDER}`,padding:mob?20:40}}>
             <QuoteForm mob={mob}/>
           </div>
         </div>
       </section>
 
-      {/* CONTACT */}
-      <section id="contact" style={{background:"#111",padding:mob?"56px 0":"80px 0"}}>
-        <div style={{maxWidth:1152,margin:"0 auto",padding:`0 ${mob?20:32}px`,display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:mob?40:64,alignItems:"start"}}>
-          <div>
-            <img src={IMG.logo} alt="KKFintax" style={{height:40,objectFit:"contain",marginBottom:20,maxWidth:180,display:"block",filter:"brightness(0) invert(1)"}}/>
-            <p style={{color:"rgba(255,255,255,.5)",lineHeight:1.72,fontSize:14,maxWidth:340,marginBottom:32,...sf}}>Spolehlivá účetní s individuálním přístupem. Ozvěte se — ráda připravím nabídku na míru.</p>
-            <Btn variant="white" size={mob?"md":"lg"} onClick={()=>go("booking")}>Naplánovat schůzku <Icon name="arrow" size={16} sw={2}/></Btn>
-          </div>
-          <div style={{display:"flex",flexDirection:"column",gap:mob?16:22,...sf}}>
-            {[["phone","Telefon","605 326 088"],["mail","E-mail","info@kkfintax.cz"],["location","Působiště","Praha & celá ČR (online)"],["clock","Dostupnost","Po–Pá 8:00–18:00"]].map(([icon,label,val])=>(
-              <div key={label} style={{display:"flex",alignItems:"center",gap:14}}>
-                <div style={{width:40,height:40,background:"rgba(255,255,255,.07)",border:"1px solid rgba(255,255,255,.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                  <Icon name={icon} size={19} color="rgba(255,255,255,.6)" sw={1.5}/>
+      {/* ── CONTACT ── */}
+      <section id="contact" style={{background:DARK,padding:mob?"56px 0":"96px 0"}}>
+        <div style={{maxWidth:1200,margin:"0 auto",padding:`0 ${mob?20:40}px`}}>
+          <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"5fr 7fr",gap:mob?48:96,alignItems:"start"}}>
+            <div>
+              <img src={IMG.logo} alt="KKFintax" style={{height:38,objectFit:"contain",marginBottom:24,display:"block",filter:"brightness(0) invert(1)"}}/>
+              <p style={{color:"rgba(255,255,255,.45)",lineHeight:1.82,fontSize:14,maxWidth:320,marginBottom:36,...sf}}>
+                Spolehlivá účetní s individuálním přístupem. Ozvěte se — ráda připravím nabídku na míru.
+              </p>
+              <Btn variant="white" size={mob?"md":"lg"} onClick={()=>go("booking")}>Naplánovat schůzku <Icon name="arrow" size={16} sw={2}/></Btn>
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:mob?20:28}}>
+              {[["phone","Telefon","605 326 088"],["mail","E-mail","info@kkfintax.cz"],["location","Působiště","Praha & celá ČR (online)"],["clock","Dostupnost","Po–Pá 8:00–18:00"]].map(([icon,label,val])=>(
+                <div key={label} style={{display:"flex",alignItems:"flex-start",gap:14}}>
+                  <div style={{width:40,height:40,border:`1px solid rgba(255,255,255,.1)`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2}}>
+                    <Icon name={icon} size={18} color={RED} sw={1.5}/>
+                  </div>
+                  <div>
+                    <div style={{color:"rgba(255,255,255,.3)",fontSize:10,textTransform:"uppercase" as const,letterSpacing:".1em",marginBottom:4,...sf}}>{label}</div>
+                    <div style={{color:"rgba(255,255,255,.88)",fontWeight:600,fontSize:14,...sf}}>{val}</div>
+                  </div>
                 </div>
-                <div>
-                  <div style={{color:"rgba(255,255,255,.35)",fontSize:11,textTransform:"uppercase",letterSpacing:".08em"}}>{label}</div>
-                  <div style={{color:"rgba(255,255,255,.9)",fontWeight:600,fontSize:14,marginTop:2}}>{val}</div>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      <footer style={{background:"#000",padding:"18px 0",textAlign:"center",fontSize:12,color:"rgba(255,255,255,.55)",...sf}}>
+      <footer style={{background:"#000",borderTop:`3px solid ${RED}`,padding:"18px 0",textAlign:"center",fontSize:12,color:"rgba(255,255,255,.4)",...sf}}>
         © 2025 KKFintax — Bc. Kateřina Kerplová · Všechna práva vyhrazena
       </footer>
+    </div>
+  );
+}
+
+/* ── SUB-COMPONENTS ─────────────────────────────────────────────── */
+function ServiceRow({ icon, title, desc, num, mob, last }: { icon:string; title:string; desc:string; num:number; mob:boolean; last:boolean }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <div onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+      style={{display:"flex",gap:20,padding:mob?"20px 0":"28px 32px 28px 0",
+        borderBottom: last ? "none" : `1px solid ${BORDER}`,
+        borderRight: !mob && num%2===1 ? `1px solid ${BORDER}` : "none",
+        paddingLeft: !mob && num%2===0 ? 32 : 0,
+        background: hov ? LGRAY : "white", transition:"background .15s"}}>
+      <div style={{flexShrink:0,paddingTop:2}}>
+        <span style={{fontSize:11,fontWeight:700,color:"rgba(139,0,0,.35)",fontFamily:"monospace",letterSpacing:".05em"}}>0{num}</span>
+      </div>
+      <div style={{flex:1}}>
+        <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
+          <div style={{width:36,height:36,background:hov?RED:"rgba(139,0,0,.08)",display:"flex",alignItems:"center",justifyContent:"center",transition:"background .15s",flexShrink:0}}>
+            <Icon name={icon} size={18} color={hov?"white":RED} sw={1.5}/>
+          </div>
+          <h3 style={{fontWeight:700,color:DARK,fontSize:15,margin:0,...ser}}>{title}</h3>
+        </div>
+        <p style={{fontSize:14,color:MUTED,lineHeight:1.65,margin:0,...sf}}>{desc}</p>
+      </div>
+    </div>
+  );
+}
+
+function WhyCard({ icon, title, desc, mob }: { icon:string; title:string; desc:string; mob:boolean }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <div onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+      style={{background:"white",padding:mob?24:36,transition:"background .2s",cursor:"default"}}>
+      <div style={{width:48,height:48,background:hov?RED:"rgba(139,0,0,.07)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:18,transition:"background .2s"}}>
+        <Icon name={icon} size={22} color={hov?"white":RED} sw={1.5}/>
+      </div>
+      <h4 style={{fontWeight:700,color:DARK,fontSize:14,margin:"0 0 8px",...ser}}>{title}</h4>
+      <p style={{color:MUTED,fontSize:13,lineHeight:1.65,margin:0,...sf}}>{desc}</p>
     </div>
   );
 }
