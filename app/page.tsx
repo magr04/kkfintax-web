@@ -124,17 +124,16 @@ function BookingPicker({ mob }: { mob: boolean }) {
   return (
     <div>
       <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:16,marginBottom:32}}>
-        {BOOKING_OPTIONS.map(({label,tag,price,desc,url})=>{
-          const active = selected === url;
-          const hov = hovCard === url;
+        {BOOKING_OPTIONS.map(({label,tag,price,desc})=>{
+          const active = selected === label;
+          const hov = hovCard === label;
           return (
-            <button key={url} onClick={()=>setSelected(url)}
-              onMouseEnter={()=>setHovCard(url)} onMouseLeave={()=>setHovCard(null)}
+            <button key={label} onClick={()=>setSelected(label)}
+              onMouseEnter={()=>setHovCard(label)} onMouseLeave={()=>setHovCard(null)}
               style={{textAlign:"left",padding:mob?20:28,border:`2px solid ${active?RED:hov?"#9ca3af":"#e5e7eb"}`,background:active?"rgba(139,0,0,.04)":hov?"#f9fafb":"white",cursor:"pointer",transition:"all .18s",outline:"none"}}>
               <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10,flexWrap:"wrap"}}>
                 <span style={{fontWeight:700,fontSize:mob?16:18,color:"#111",...ser}}>{label}</span>
-                <span style={{fontSize:11,fontWeight:700,textTransform:"uppercase" as const,letterSpacing:".08em",color:active?"white":RED,background:active?RED:"rgba(139,0,0,.08)",padding:"3px 9px",...sf}}>{tag}</span>
-                {price && <span style={{fontSize:13,fontWeight:600,color:"#6b7280",...sf}}>{price}</span>}
+                <span style={{fontSize:11,fontWeight:700,textTransform:"uppercase" as const,letterSpacing:".08em",color:active?"white":RED,background:active?RED:"rgba(139,0,0,.08)",padding:"3px 9px",...sf}}>{price ?? tag}</span>
               </div>
               <p style={{fontSize:14,color:"#6b7280",lineHeight:1.6,margin:0,...sf}}>{desc}</p>
               {active && <div style={{marginTop:14,fontSize:13,fontWeight:600,color:RED,...sf,display:"flex",alignItems:"center",gap:6}}>Vyberte termín níže <Icon name="arrow" size={14} color={RED} sw={2}/></div>}
@@ -142,7 +141,7 @@ function BookingPicker({ mob }: { mob: boolean }) {
           );
         })}
       </div>
-      {selected && <CalendlyWidget url={selected} mob={mob}/>}
+      {selected && <CalendlyWidget url={BOOKING_OPTIONS.find(o=>o.label===selected)!.url} mob={mob}/>}
     </div>
   );
 }
