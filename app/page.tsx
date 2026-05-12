@@ -357,7 +357,7 @@ export default function KKFintax() {
 
           {/* Right: photo bleeds to edge */}
           {mob ? (
-            <div style={{order:2,width:"100%",position:"relative",overflow:"hidden",height:420}}>
+            <div style={{order:2,width:"100%",position:"relative",overflow:"hidden",height:540}}>
               <img src={IMG.p1} alt="Bc. Kateřina Kerplová" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block"}}/>
               <div style={{position:"absolute",bottom:0,left:0,right:0,background:"linear-gradient(transparent,rgba(15,23,42,.88))",padding:"32px 20px 20px"}}>
                 <div style={{color:"white",fontWeight:700,fontSize:15,...ser}}>Bc. Kateřina Kerplová</div>
