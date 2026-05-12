@@ -112,14 +112,14 @@ const BOOKING_OPTIONS = [
     tag: "Zdarma",
     price: null,
     desc: "Nezávazná konzultace. Zjistíme, co potřebujete a jak vám mohu pomoci.",
-    url: "https://calendly.com/katerina-kerplova/30min",
+    url: "https://calendly.com/roland-magera/30min",
   },
   {
     label: "60 min",
     tag: "Placená",
     price: "od 990 Kč",
     desc: "Detailní konzultace s konkrétními doporučeními a akčním plánem.",
-    url: "https://calendly.com/katerina-kerplova/60min",
+    url: "https://calendly.com/roland-magera/30min",
   },
 ];
 
