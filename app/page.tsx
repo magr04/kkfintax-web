@@ -365,7 +365,7 @@ export default function KKFintax() {
               </div>
             </div>
           ) : (
-            <div style={{flex:"0 0 45%",order:2,position:"relative",overflow:"hidden"}}>
+            <div style={{flex:"0 0 36%",order:2,position:"relative",overflow:"hidden"}}>
               <img src={IMG.p1} alt="Bc. Kateřina Kerplová" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block"}}/>
               <div style={{position:"absolute",bottom:0,left:0,right:0,background:"linear-gradient(transparent,rgba(15,23,42,.8))",padding:"40px 32px 28px"}}>
                 <div style={{color:"white",fontWeight:700,fontSize:15,...ser}}>Bc. Kateřina Kerplová</div>
@@ -518,8 +518,8 @@ export default function KKFintax() {
         </div>
       </section>
 
-      <footer style={{background:"#000",borderTop:`3px solid ${RED}`,padding:"18px 0",textAlign:"center",fontSize:12,color:"rgba(255,255,255,.4)",...sf}}>
-        © 2025 KKFintax — Bc. Kateřina Kerplová · Všechna práva vyhrazena
+      <footer style={{background:"#000",padding:"18px 0",textAlign:"center",fontSize:12,color:"rgba(255,255,255,.55)",...sf}}>
+        © 2026 KKFintax — Bc. Kateřina Kerplová · Všechna práva vyhrazena
       </footer>
     </div>
   );
@@ -530,21 +530,16 @@ function ServiceRow({ icon, title, desc, num, mob, last }: { icon:string; title:
   const [hov, setHov] = useState(false);
   return (
     <div onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-      style={{display:"flex",gap:20,padding:mob?"20px 0":"28px 32px 28px 0",
+      style={{display:"flex",gap:16,padding:mob?"20px 0":"28px 32px 28px 0",
         borderBottom: last ? "none" : `1px solid ${BORDER}`,
         borderRight: !mob && num%2===1 ? `1px solid ${BORDER}` : "none",
         paddingLeft: !mob && num%2===0 ? 32 : 0,
         background: hov ? LGRAY : "white", transition:"background .15s"}}>
-      <div style={{flexShrink:0,paddingTop:2}}>
-        <span style={{fontSize:11,fontWeight:700,color:"rgba(139,0,0,.35)",fontFamily:"monospace",letterSpacing:".05em"}}>0{num}</span>
+      <div style={{width:36,height:36,background:"rgba(139,0,0,.08)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2}}>
+        <Icon name={icon} size={18} color={RED} sw={1.5}/>
       </div>
       <div style={{flex:1}}>
-        <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
-          <div style={{width:36,height:36,background:hov?RED:"rgba(139,0,0,.08)",display:"flex",alignItems:"center",justifyContent:"center",transition:"background .15s",flexShrink:0}}>
-            <Icon name={icon} size={18} color={hov?"white":RED} sw={1.5}/>
-          </div>
-          <h3 style={{fontWeight:700,color:DARK,fontSize:15,margin:0,...ser}}>{title}</h3>
-        </div>
+        <h3 style={{fontWeight:700,color:DARK,fontSize:15,margin:"0 0 8px",...ser}}>{title}</h3>
         <p style={{fontSize:14,color:MUTED,lineHeight:1.65,margin:0,...sf}}>{desc}</p>
       </div>
     </div>
