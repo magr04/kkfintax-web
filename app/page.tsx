@@ -112,7 +112,7 @@ const BOOKING_OPTIONS = [
   {
     label: "60 min",
     tag: "Placená",
-    price: "od 990 Kč",
+    price: "1 499 Kč",
     desc: "Detailní konzultace s konkrétními doporučeními a akčním plánem.",
     url: "https://calendly.com/katerina-kerplova/60min",
   },
@@ -506,7 +506,7 @@ export default function KKFintax() {
       </section>
 
       <footer style={{background:"#000",padding:"18px 0",textAlign:"center",fontSize:12,color:"rgba(255,255,255,.55)",...sf}}>
-        © 2025 KKFintax — Bc. Kateřina Kerplová · Všechna práva vyhrazena
+        © 2026 KKFintax — Bc. Kateřina Kerplová · Všechna práva vyhrazena
       </footer>
     </div>
   );
