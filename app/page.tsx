@@ -496,7 +496,7 @@ export default function KKFintax() {
       </section>
 
       {/* ── CONTACT ── */}
-      <section id="contact" style={{background:DARK,padding:mob?"56px 0":"96px 0"}}>
+      <section id="contact" style={{background:"#111",padding:mob?"56px 0":"96px 0"}}>
         <div style={{maxWidth:1200,margin:"0 auto",padding:`0 ${mob?20:40}px`}}>
           <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"5fr 7fr",gap:mob?48:96,alignItems:"start"}}>
             <div>
