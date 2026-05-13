@@ -5,7 +5,17 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { name, email, phone, entity, employees, vat, docs, services, note } = body;
+  const { name, email, phone, entity, employees, vat, docs, services, note, website, _t } = body;
+
+  // Bot protection: honeypot field filled = bot
+  if (website) return NextResponse.json({ ok: true });
+
+  // Bot protection: form submitted too fast for a human (< 3 seconds)
+  if (typeof _t === "number" && Date.now() - _t < 3000) return NextResponse.json({ ok: true });
+
+  // Basic server-side validation
+  if (!name || !email || !entity) return NextResponse.json({ error: "missing fields" }, { status: 400 });
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ error: "invalid email" }, { status: 400 });
 
   const html = `
     <h2>Nová poptávka — KKFintax</h2>

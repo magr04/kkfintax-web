@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { IMG_P1, IMG_P2, IMG_P3, IMG_P4, IMG_LOGO, IMG_LOGO_WHITE } from "../components/images";
 
 const IMG = { p1: IMG_P1, p2: IMG_P2, p3: IMG_P3, p4: IMG_P4, logo: IMG_LOGO, logoWhite: IMG_LOGO_WHITE };
@@ -153,6 +153,8 @@ function BookingPicker({ mob }: { mob: boolean }) {
 
 function QuoteForm({ mob }: { mob: boolean }) {
   const [f, setF] = useState({ name:"",email:"",phone:"",entity:"",employees:"",vat:"",docs:"",services:[] as string[],note:"" });
+  const [hp, setHp] = useState("");
+  const formStart = useRef(Date.now());
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
   const [sendError, setSendError] = useState(false);
@@ -184,7 +186,7 @@ function QuoteForm({ mob }: { mob: boolean }) {
     setLoading(true);
     setSendError(false);
     try {
-      const res = await fetch("/api/send-email", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(f) });
+      const res = await fetch("/api/send-email", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ ...f, website: hp, _t: formStart.current }) });
       if (res.ok) setDone(true);
       else setSendError(true);
     } catch { setSendError(true); }
@@ -205,6 +207,10 @@ function QuoteForm({ mob }: { mob: boolean }) {
 
   return (
     <div style={{display:"flex",flexDirection:"column",gap:26}}>
+      {/* honeypot — invisible to humans, bots fill it */}
+      <div style={{position:"absolute",left:"-9999px",top:0,width:0,height:0,overflow:"hidden"}} aria-hidden="true">
+        <input type="text" name="website" tabIndex={-1} autoComplete="off" value={hp} onChange={e=>setHp(e.target.value)}/>
+      </div>
       <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:20}}>
         {([["Jméno a příjmení *","text","name","Jana Nováková"],["E-mail *","email","email","jana@firma.cz"],["Telefon","tel","phone","+420 777 000 000"]] as string[][]).map(([label,type,key,ph])=>(
           <div key={key}>
