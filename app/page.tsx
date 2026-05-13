@@ -71,12 +71,15 @@ const Btn = ({ children, variant = "primary", size = "md", onClick, style = {} }
 };
 
 const SERVICES = [
-  { icon:"clipboard", title:"Vedení účetnictví",      desc:"Kompletní vedení účetnictví pro s.r.o. i fyzické osoby. Přesnost a klid v hlavě." },
-  { icon:"chartBar",  title:"Daňová evidence (OSVČ)", desc:"Daňová evidence přizpůsobená potřebám živnostníků a podnikatelů." },
-  { icon:"document",  title:"DPH, DPPO a DPFO",        desc:"Zpracování podkladů k přiznáním. Žádné pokuty, žádné opoždění." },
-  { icon:"chat",      title:"Účetní konzultace",       desc:"Nejste si jistí? Poraďte se. Srozumitelně, bez zbytečné teorie." },
-  { icon:"shield",    title:"Spolupráce s poradcem",   desc:"Napojení na externího daňového poradce pro složitější případy." },
-  { icon:"office",    title:"Zahájení podnikání",      desc:"Poradenství při zakládání s.r.o. nebo zahájení podnikání od nuly." },
+  { icon:"clipboard", title:"Vedení účetnictví",                       desc:"Pro malé a střední podniky, neziskové organizace a spolky." },
+  { icon:"chartBar",  title:"Daňová evidence a účetnictví pro OSVČ",  desc:"Přehledná evidence příjmů a výdajů pro živnostníky a podnikatele." },
+  { icon:"document",  title:"Finanční účetnictví",                     desc:"Kompletní zpracování finančních operací a výkaznictví." },
+  { icon:"users",     title:"Mzdové účetnictví",                       desc:"Zpracování mezd, odvodů a veškeré mzdové agendy." },
+  { icon:"shield",    title:"Zpracování podkladů k DPH",               desc:"Včetně kontrolního a souhrnného hlášení. Bez pokut, bez zpoždění." },
+  { icon:"document",  title:"Zpracování podkladů k DPPO a DPFO",      desc:"Daňová přiznání právnických i fyzických osob." },
+  { icon:"chat",      title:"Účetní konzultace",                       desc:"Srozumitelné odpovědi na vaše otázky. Bez zbytečného žargonu." },
+  { icon:"lightbulb", title:"Zajištění konzultace daňového poradce",  desc:"Napojení na externího daňového poradce pro složitější případy." },
+  { icon:"office",    title:"Poradenství při zahájení podnikání",      desc:"Pomoc se zahájením podnikání a založením společnosti." },
 ];
 
 const REVIEWS = [
@@ -85,7 +88,6 @@ const REVIEWS = [
   { name:"Petr K.",  role:"E-shop provozovatel",        text:"Skvělá spolupráce od prvního kontaktu. Oceňuji individuální přístup a rychlé reakce." },
 ];
 
-const SVC_OPTS = ["Vedení účetnictví","Daňová evidence","DPH přiznání","Mzdové účetnictví","Daňové přiznání (DPPO/DPFO)","Účetní konzultace","Poradenství při zahájení"];
 
 function CalendlyWidget({ url, mob }: { url: string; mob: boolean }) {
   useEffect(() => {
@@ -106,16 +108,10 @@ const BOOKING_OPTIONS = [
     label: "30 min",
     tag: "Zdarma",
     price: null,
-    desc: "Nezávazná konzultace. Zjistíme, co potřebujete a jak vám mohu pomoci.",
+    desc: "Nezávazná konzultace. Zjistíme, co potřebujete a jak vám můžeme pomoci.",
     url: "https://calendly.com/roland-magera/30min",
   },
-  {
-    label: "60 min",
-    tag: "Placená",
-    price: "1 499 Kč",
-    desc: "Detailní konzultace s konkrétními doporučeními a akčním plánem.",
-    url: "https://calendly.com/roland-magera/30min",
-  },
+  // { label:"60 min", tag:"Placená", price:"1 499 Kč", desc:"Detailní konzultace s konkrétními doporučeními a akčním plánem.", url:"https://calendly.com/roland-magera/30min" },
 ];
 
 function BookingPicker({ mob }: { mob: boolean }) {
@@ -123,39 +119,53 @@ function BookingPicker({ mob }: { mob: boolean }) {
   const [hovCard, setHovCard] = useState<string | null>(null);
   return (
     <div>
-      <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:16,marginBottom:32}}>
-        {BOOKING_OPTIONS.map(({label,tag,price,desc})=>{
-          const active = selected === label;
-          const hov = hovCard === label;
-          return (
-            <button key={label} onClick={()=>setSelected(label)}
+      {BOOKING_OPTIONS.map(({label,tag,price,desc,url})=>{
+        const active = selected === label;
+        const hov = hovCard === label;
+        return (
+          <div key={label}>
+            <button onClick={()=>setSelected(active ? null : label)}
               onMouseEnter={()=>setHovCard(label)} onMouseLeave={()=>setHovCard(null)}
-              style={{textAlign:"left",padding:mob?20:28,border:`2px solid ${active?RED:hov?"#9ca3af":"#e5e7eb"}`,background:active?"rgba(139,0,0,.04)":hov?"#f9fafb":"white",cursor:"pointer",transition:"all .18s",outline:"none"}}>
-              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10,flexWrap:"wrap"}}>
-                <span style={{fontWeight:700,fontSize:mob?16:18,color:"#111",...ser}}>{label}</span>
-                <span style={{fontSize:11,fontWeight:700,textTransform:"uppercase" as const,letterSpacing:".08em",color:active?"white":RED,background:active?RED:"rgba(139,0,0,.08)",padding:"3px 9px",...sf}}>{price ?? tag}</span>
+              style={{width:"100%",textAlign:"left",padding:mob?"20px 24px":"28px 36px",
+                border:`2px solid ${active?RED:hov?RED:"#e5e7eb"}`,
+                background:active?RED:hov?"#fff8f8":"white",
+                cursor:"pointer",transition:"all .18s",outline:"none",
+                display:"flex",alignItems:"center",justifyContent:"space-between",gap:16,flexWrap:"wrap"}}>
+              <div style={{flex:1}}>
+                <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8,flexWrap:"wrap"}}>
+                  <span style={{fontWeight:700,fontSize:mob?17:20,color:active?"white":"#111",...ser}}>{label}</span>
+                  <span style={{fontSize:11,fontWeight:700,textTransform:"uppercase" as const,letterSpacing:".08em",
+                    color:active?"rgba(255,255,255,.8)":"white",
+                    background:active?"rgba(255,255,255,.2)":RED,
+                    padding:"3px 10px",...sf}}>{price ?? tag}</span>
+                </div>
+                <p style={{fontSize:14,color:active?"rgba(255,255,255,.8)":hov?"#6b7280":"#6b7280",lineHeight:1.6,margin:0,...sf}}>{desc}</p>
               </div>
-              <p style={{fontSize:14,color:"#6b7280",lineHeight:1.6,margin:0,...sf}}>{desc}</p>
-              {active && <div style={{marginTop:14,fontSize:13,fontWeight:600,color:RED,...sf,display:"flex",alignItems:"center",gap:6}}>Vyberte termín níže <Icon name="arrow" size={14} color={RED} sw={2}/></div>}
+              <div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0,
+                color:active?"white":RED,fontWeight:700,fontSize:14,...sf,
+                background:active?"rgba(255,255,255,.15)":"rgba(139,0,0,.07)",
+                padding:"10px 20px",transition:"all .18s"}}>
+                <Icon name="calendar" size={16} color={active?"white":RED} sw={2}/>
+                {active ? "Skrýt kalendář" : "Vybrat termín"}
+                {!active && <Icon name="arrow" size={14} color={RED} sw={2}/>}
+              </div>
             </button>
-          );
-        })}
-      </div>
-      {selected && <CalendlyWidget url={BOOKING_OPTIONS.find(o=>o.label===selected)!.url} mob={mob}/>}
+            {active && <div style={{marginTop:0,border:`2px solid ${RED}`,borderTop:"none"}}><CalendlyWidget url={url} mob={mob}/></div>}
+          </div>
+        );
+      })}
     </div>
   );
 }
 
 function QuoteForm({ mob }: { mob: boolean }) {
-  const [f, setF] = useState({ name:"",email:"",phone:"",entity:"",employees:"",vat:"",docs:"",services:[] as string[],note:"" });
+  const [f, setF] = useState({ name:"",email:"",phone:"",entity:"",vat:"",employees:"",dpp:"",invIn:"",invOut:"",cashDocs:"",assets:"",bankAccounts:"",note:"" });
   const [hp, setHp] = useState("");
   const formStart = useRef(Date.now());
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
   const [sendError, setSendError] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [hovSvc, setHovSvc] = useState<string|null>(null);
-  const toggle = (s: string) => setF(p => ({ ...p, services: p.services.includes(s) ? p.services.filter(x=>x!==s) : [...p.services,s] }));
 
   const errs = submitted ? {
     name: !f.name,
@@ -163,11 +173,11 @@ function QuoteForm({ mob }: { mob: boolean }) {
     entity: !f.entity,
   } : { name: false, email: false, entity: false };
 
-  const inp = (hasErr: boolean): React.CSSProperties => ({
+  const inp = (hasErr = false): React.CSSProperties => ({
     display:"block", width:"100%", height:42, border:`1px solid ${hasErr ? "#dc2626" : "#d1d5db"}`,
     background: hasErr ? "#fff5f5" : "white", padding:"0 12px", fontSize:14, ...sf, outline:"none", boxSizing:"border-box",
   });
-  const sel = (hasErr: boolean): React.CSSProperties => ({
+  const sel = (hasErr = false): React.CSSProperties => ({
     ...inp(hasErr),
     appearance:"none", WebkitAppearance:"none",
     backgroundImage:`url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`,
@@ -199,68 +209,84 @@ function QuoteForm({ mob }: { mob: boolean }) {
   );
 
   const errMsg = (msg: string) => <p style={{...sf,fontSize:12,color:"#dc2626",margin:"4px 0 0"}}>{msg}</p>;
+  const lbl = (text: string) => <label style={{...sf,fontSize:13,fontWeight:600,color:"#374151",display:"block",marginBottom:5}}>{text}</label>;
+  const sHdr = (text: string) => <p style={{...sf,fontSize:11,fontWeight:700,color:RED,textTransform:"uppercase" as const,letterSpacing:".1em",margin:"4px 0 12px",borderTop:"1px solid #f3f4f6",paddingTop:20}}>{text}</p>;
 
   return (
-    <div style={{display:"flex",flexDirection:"column",gap:26}}>
-      {/* honeypot — invisible to humans, bots fill it */}
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
       <div style={{position:"absolute",left:"-9999px",top:0,width:0,height:0,overflow:"hidden"}} aria-hidden="true">
         <input type="text" name="website" tabIndex={-1} autoComplete="off" value={hp} onChange={e=>setHp(e.target.value)}/>
       </div>
-      <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:20}}>
-        {([["Jméno a příjmení *","text","name","Jana Nováková"],["E-mail *","email","email","jana@firma.cz"],["Telefon","tel","phone","+420 777 000 000"]] as string[][]).map(([label,type,key,ph])=>(
-          <div key={key}>
-            <label style={{...sf,fontSize:13,fontWeight:600,color:"#374151",display:"block",marginBottom:5}}>{label}</label>
-            <input type={type} placeholder={ph} value={(f as any)[key]} onChange={e=>setF(p=>({...p,[key]:e.target.value}))} style={inp((errs as any)[key] ?? false)}/>
-            {(errs as any)[key] && errMsg(key==="email" ? "Zadejte platný e-mail" : "Toto pole je povinné")}
-          </div>
-        ))}
-        {([["Typ subjektu *","entity",["OSVČ","s.r.o.","a.s.","Spolek / nezisková org.","Jiné"]],
-           ["Počet zaměstnanců","employees",["0 (jen majitel)","1–5","6–20","20+"]],
-           ["Plátce DPH?","vat",["Ano","Ne","Nevím / plánuji se stát"]]] as [string,string,string[]][]).map(([label,key,opts])=>(
-          <div key={key}>
-            <label style={{...sf,fontSize:13,fontWeight:600,color:"#374151",display:"block",marginBottom:5}}>{label}</label>
-            <select value={(f as any)[key]} onChange={e=>setF(p=>({...p,[key]:e.target.value}))} style={sel((errs as any)[key] ?? false)}>
-              <option value="">Vyberte...</option>
-              {opts.map(o=><option key={o}>{o}</option>)}
-            </select>
-            {(errs as any)[key] && errMsg("Toto pole je povinné")}
-          </div>
-        ))}
-        <div style={{gridColumn:mob?"1":"1/-1"}}>
-          <label style={{...sf,fontSize:13,fontWeight:600,color:"#374151",display:"block",marginBottom:5}}>Počet dokladů měsíčně</label>
-          <select value={f.docs} onChange={e=>setF(p=>({...p,docs:e.target.value}))} style={sel(false)}>
+
+      {/* Kontaktní údaje */}
+      <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:16}}>
+        <div>
+          {lbl("Jméno a příjmení *")}
+          <input type="text" placeholder="Jana Nováková" value={f.name} onChange={e=>setF(p=>({...p,name:e.target.value}))} style={inp(errs.name)}/>
+          {errs.name && errMsg("Toto pole je povinné")}
+        </div>
+        <div>
+          {lbl("Pracovní e-mail *")}
+          <input type="email" placeholder="jana@firma.cz" value={f.email} onChange={e=>setF(p=>({...p,email:e.target.value}))} style={inp(errs.email)}/>
+          {errs.email && errMsg("Zadejte platný e-mail")}
+        </div>
+        <div>
+          {lbl("Telefon")}
+          <input type="tel" placeholder="+420 777 000 000" value={f.phone} onChange={e=>setF(p=>({...p,phone:e.target.value}))} style={inp()}/>
+        </div>
+        <div>
+          {lbl("Typ subjektu *")}
+          <select value={f.entity} onChange={e=>setF(p=>({...p,entity:e.target.value}))} style={sel(errs.entity)}>
             <option value="">Vyberte...</option>
-            {["do 20","21–50","51–100","100+"].map(o=><option key={o}>{o} dokladů</option>)}
+            {["OSVČ","s.r.o.","a.s.","Spolek / nezisková org.","Jiné"].map(o=><option key={o}>{o}</option>)}
+          </select>
+          {errs.entity && errMsg("Toto pole je povinné")}
+        </div>
+        <div>
+          {lbl("Plátce DPH?")}
+          <select value={f.vat} onChange={e=>setF(p=>({...p,vat:e.target.value}))} style={sel()}>
+            <option value="">Vyberte...</option>
+            {["Ano","Ne","Nevím / plánuji se stát"].map(o=><option key={o}>{o}</option>)}
           </select>
         </div>
       </div>
-      <div>
-        <label style={{...sf,fontSize:13,fontWeight:600,color:"#374151",display:"block",marginBottom:8}}>Jaké služby vás zajímají?</label>
-        <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:8}}>
-          {SVC_OPTS.map(s=>{
-            const active = f.services.includes(s);
-            const hov = hovSvc === s;
-            return (
-              <label key={s} onMouseEnter={()=>setHovSvc(s)} onMouseLeave={()=>setHovSvc(null)}
-                style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",cursor:"pointer",transition:"all .15s",
-                  border:`1px solid ${active?RED:hov?"#9ca3af":"#e5e7eb"}`,
-                  background:active?"rgba(139,0,0,.04)":hov?"#f9fafb":"white"}}>
-                <input type="checkbox" checked={active} onChange={()=>toggle(s)} style={{accentColor:RED,width:15,height:15,flexShrink:0}}/>
-                <span style={{...sf,fontSize:13,color:active?RED:"#374151",transition:"color .15s"}}>{s}</span>
-              </label>
-            );
-          })}
+
+      {/* Zaměstnanci */}
+      {sHdr("Zaměstnanci")}
+      <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:16}}>
+        <div>
+          {lbl("Počet zaměstnanců")}
+          <input type="text" placeholder="např. 3" value={f.employees} onChange={e=>setF(p=>({...p,employees:e.target.value}))} style={inp()}/>
+        </div>
+        <div>
+          {lbl("z toho na DPP")}
+          <input type="text" placeholder="např. 1" value={f.dpp} onChange={e=>setF(p=>({...p,dpp:e.target.value}))} style={inp()}/>
         </div>
       </div>
-      <div>
-        <label style={{...sf,fontSize:13,fontWeight:600,color:"#374151",display:"block",marginBottom:5}}>Poznámka</label>
-        <textarea rows={4} placeholder="Cokoli, co nám pomůže připravit přesnou nabídku..." value={f.note} onChange={e=>setF(p=>({...p,note:e.target.value}))} style={{...inp(false),height:"auto",padding:"10px 12px",resize:"none"}}/>
+
+      {/* Doklady */}
+      {sHdr("Počet dokladů za měsíc (přibližně)")}
+      <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:16}}>
+        {([["Faktury přijaté","invIn"],["Faktury vydané","invOut"],["Pokladní doklady","cashDocs"],["Majetek","assets"],["Počet bankovních účtů","bankAccounts"]] as [string,string][]).map(([label,key])=>(
+          <div key={key}>
+            {lbl(label)}
+            <input type="text" placeholder="0" value={(f as any)[key]} onChange={e=>setF(p=>({...p,[key]:e.target.value}))} style={inp()}/>
+          </div>
+        ))}
       </div>
-      <Btn variant="primary" size="lg" onClick={submit} style={{width:"100%"}}>
+
+      {/* Poznámka */}
+      {sHdr("Doplňující informace")}
+      <div>
+        {lbl("Poznámka")}
+        <textarea rows={4} placeholder="Cokoli, co nám pomůže připravit přesnou nabídku..." value={f.note} onChange={e=>setF(p=>({...p,note:e.target.value}))} style={{...inp(),height:"auto",padding:"10px 12px",resize:"none"}}/>
+      </div>
+
+      <Btn variant="primary" size="lg" onClick={submit} style={{width:"100%",marginTop:8}}>
         {loading ? "Odesílám…" : <>Odeslat poptávku <Icon name="arrow" size={16} sw={2}/></>}
       </Btn>
       {sendError && <p style={{...sf,fontSize:13,color:"#dc2626",textAlign:"center",margin:0}}>Nastala chyba, zkuste to prosím znovu.</p>}
-      <p style={{...sf,fontSize:12,color:"#9ca3af",textAlign:"center",margin:0}}>Odpovím do 24 hodin. Bez závazků.</p>
+      <p style={{...sf,fontSize:12,color:"#9ca3af",textAlign:"center",margin:0}}>Ozveme se do 24 hodin. Bez závazků.</p>
     </div>
   );
 }
@@ -301,7 +327,7 @@ export default function KKFintax() {
             <Btn variant="primary" size="md" onClick={()=>go("booking")}>Rezervovat schůzku <Icon name="arrow" size={14} sw={2}/></Btn>
           ) : (
             <div style={{display:"flex",alignItems:"center",gap:28,...sf}}>
-              {[["Služby","services"],["O mně","about"],["Recenze","reviews"],["Poptávka","quote"],["Kontakt","contact"]].map(([l,id])=>(
+              {[["Služby","services"],["O nás","about"],["Recenze","reviews"],["Poptávka","quote"],["Kontakt","contact"]].map(([l,id])=>(
                 <button key={id} onClick={()=>go(id)} style={{fontSize:14,color:"#4b5563",fontWeight:500,background:"none",border:"none",cursor:"pointer",padding:"4px 0",...sf}}
                   onMouseEnter={e=>(e.currentTarget.style.color=RED)}
                   onMouseLeave={e=>(e.currentTarget.style.color="#4b5563")}
@@ -314,50 +340,93 @@ export default function KKFintax() {
       </nav>
 
       {/* HERO */}
-      <section style={{background:RED,minHeight:mob?520:640,position:"relative",overflow:"hidden"}}>
-        <div style={{position:"absolute",inset:0,backgroundImage:"radial-gradient(circle, rgba(255,255,255,.18) 1px, transparent 1px)",backgroundSize:"28px 28px"}}/>
-        <div style={{position:"relative",maxWidth:1152,margin:"0 auto",padding:mob?"56px 20px 48px":"88px 32px",display:"flex",alignItems:"center",gap:mob?0:72,minHeight:mob?520:640,flexDirection:mob?"column":"row"}}>
-          <div style={{flex:1,order:1}}>
-            <div style={{display:"inline-flex",alignItems:"center",gap:9,background:"rgba(255,255,255,.12)",padding:"6px 14px",marginBottom:24,...sf}}>
-              <div style={{width:7,height:7,background:"white",borderRadius:"50%"}}/>
-              <span style={{color:"rgba(255,255,255,.9)",fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em"}}>Certifikovaná účetní · Praha & online</span>
-            </div>
-            <h1 style={{fontSize:mob?38:56,fontWeight:700,color:"white",lineHeight:1.12,margin:"0 0 20px",letterSpacing:"-.025em"}}>
-              Účetnictví,<br/>které dává<br/><span style={{color:"rgba(255,255,255,.38)"}}>smysl.</span>
-            </h1>
-            <p style={{fontSize:mob?15:17,color:"rgba(255,255,255,.78)",marginBottom:32,lineHeight:1.7,maxWidth:400,...sf}}>
-              Bc. Kateřina Kerplová — více než 8 let praxe, individuální přístup a srozumitelná komunikace. Bez překvapení.
-            </p>
-            <div style={{display:"flex",gap:12,flexWrap:"wrap"}}>
-              <Btn variant="white" size={mob?"md":"lg"} onClick={()=>go("booking")}>Naplánovat schůzku <Icon name="arrow" size={16} sw={2}/></Btn>
-              <Btn variant="whiteOutline" size={mob?"md":"lg"} onClick={()=>go("quote")}>Cenová nabídka</Btn>
-            </div>
-            <div style={{display:"flex",gap:mob?28:44,marginTop:40,paddingTop:36,borderTop:"1px solid rgba(255,255,255,.18)",...sf}}>
-              {[["8+","let praxe"],["50+","klientů"],["100%","online možné"]].map(([n,l])=>(
-                <div key={l}><div style={{fontSize:mob?22:28,fontWeight:700,color:"white"}}>{n}</div><div style={{fontSize:10,color:"rgba(255,255,255,.5)",textTransform:"uppercase",letterSpacing:".08em",marginTop:3}}>{l}</div></div>
-              ))}
-            </div>
-          </div>
-          {mob ? (
-            <div style={{width:"100%",maxWidth:280,margin:"32px auto 0",order:2,position:"relative"}}>
-              <img src={IMG.p1} alt="Bc. Kateřina Kerplová" style={{width:"100%",height:280,objectFit:"cover",objectPosition:"center top",display:"block"}}/>
-              <div style={{position:"absolute",bottom:0,left:0,right:0,background:"linear-gradient(transparent,rgba(80,0,0,.85))",padding:"24px 14px 12px"}}>
-                <div style={{color:"white",fontWeight:700,fontSize:13,...ser}}>Bc. Kateřina Kerplová</div>
-                <div style={{color:"rgba(255,255,255,.62)",fontSize:11,marginTop:2,...sf}}>Externí účetní</div>
+      <section style={{background:"white",borderBottom:"1px solid #e5e7eb"}}>
+        {mob ? (
+          <>
+            <div style={{padding:"48px 20px 32px"}}>
+              <div style={{display:"inline-flex",alignItems:"center",gap:9,background:"#f3f4f6",padding:"6px 14px",marginBottom:24,...sf}}>
+                <div style={{width:7,height:7,background:RED,borderRadius:"50%"}}/>
+                <span style={{color:"#6b7280",fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em"}}><span style={{color:RED}}>Účetní & daňová evidence</span> · Litovel</span>
+              </div>
+              <h1 style={{fontSize:36,fontWeight:700,color:"#111",lineHeight:1.12,margin:"0 0 20px",letterSpacing:"-.025em"}}>
+                Účetnictví,<br/>které dává<br/><span style={{color:"#d1d5db"}}>smysl.</span>
+              </h1>
+              <p style={{fontSize:15,color:"#4b5563",marginBottom:32,lineHeight:1.7,...sf}}>
+                Komplexní účetní služby pro OSVČ, s.r.o. i neziskové organizace. Litovel a celá ČR online.
+              </p>
+              <div style={{display:"flex",gap:12,flexWrap:"wrap"}}>
+                <Btn variant="primary" size="md" onClick={()=>go("booking")}>Naplánovat schůzku <Icon name="arrow" size={16} sw={2}/></Btn>
+                <Btn variant="outline" size="md" onClick={()=>go("quote")}>Cenová nabídka</Btn>
+              </div>
+              <div style={{display:"flex",gap:28,marginTop:40,paddingTop:36,borderTop:"1px solid #e5e7eb",...sf}}>
+                {[["8+","let praxe"],["100%","online možné"]].map(([n,l])=>(
+                  <div key={l}><div style={{fontSize:22,fontWeight:700,color:"#111"}}>{n}</div><div style={{fontSize:10,color:"#9ca3af",textTransform:"uppercase",letterSpacing:".08em",marginTop:3}}>{l}</div></div>
+                ))}
               </div>
             </div>
-          ) : (
-            <div style={{flexShrink:0,position:"relative",width:300,order:2}}>
-              <div style={{position:"absolute",top:-14,left:-14,width:"100%",height:"100%",border:"2px solid rgba(255,255,255,.18)"}}/>
-              <div style={{position:"relative",zIndex:1,overflow:"hidden",height:460}}>
+            <div style={{padding:"0 20px 0"}}>
+              <div style={{position:"relative",overflow:"hidden",height:340}}>
                 <img src={IMG.p1} alt="Bc. Kateřina Kerplová" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block"}}/>
-                <div style={{position:"absolute",bottom:0,left:0,right:0,background:"linear-gradient(transparent,rgba(80,0,0,.92))",padding:"28px 18px 18px"}}>
-                  <div style={{color:"white",fontWeight:700,fontSize:15,...ser}}>Bc. Kateřina Kerplová</div>
-                  <div style={{color:"rgba(255,255,255,.62)",fontSize:12,marginTop:2,...sf}}>Externí účetní</div>
+                <div style={{position:"absolute",bottom:0,left:0,right:0,background:"linear-gradient(transparent,rgba(0,0,0,.72))",padding:"24px 20px 16px"}}>
+                  <div style={{color:"white",fontWeight:700,fontSize:14,...ser}}>Bc. Kateřina Kerplová</div>
+                  <div style={{color:"rgba(255,255,255,.62)",fontSize:12,marginTop:2,...sf}}>Hlavní účetní</div>
                 </div>
               </div>
             </div>
-          )}
+          </>
+        ) : (
+          <div style={{maxWidth:1152,margin:"0 auto",padding:"88px 32px",display:"flex",alignItems:"center",gap:72,minHeight:620}}>
+            <div style={{flex:1}}>
+              <div style={{display:"inline-flex",alignItems:"center",gap:9,background:"#f3f4f6",padding:"6px 14px",marginBottom:24,...sf}}>
+                <div style={{width:7,height:7,background:RED,borderRadius:"50%"}}/>
+                <span style={{color:"#6b7280",fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em"}}><span style={{color:RED}}>Účetní & daňová evidence</span> · Litovel</span>
+              </div>
+              <h1 style={{fontSize:54,fontWeight:700,color:"#111",lineHeight:1.12,margin:"0 0 20px",letterSpacing:"-.025em"}}>
+                Účetnictví,<br/>které dává<br/><span style={{color:"#d1d5db"}}>smysl.</span>
+              </h1>
+              <p style={{fontSize:17,color:"#4b5563",marginBottom:32,lineHeight:1.7,maxWidth:420,...sf}}>
+                Komplexní účetní služby pro OSVČ, s.r.o. i neziskové organizace. Litovel a celá ČR online.
+              </p>
+              <div style={{display:"flex",gap:12,flexWrap:"wrap"}}>
+                <Btn variant="primary" size="lg" onClick={()=>go("booking")}>Naplánovat schůzku <Icon name="arrow" size={16} sw={2}/></Btn>
+                <Btn variant="outline" size="lg" onClick={()=>go("quote")}>Cenová nabídka</Btn>
+              </div>
+              <div style={{display:"flex",gap:44,marginTop:40,paddingTop:36,borderTop:"1px solid #e5e7eb",...sf}}>
+                {[["8+","let praxe"],["100%","online možné"]].map(([n,l])=>(
+                  <div key={l}><div style={{fontSize:28,fontWeight:700,color:"#111"}}>{n}</div><div style={{fontSize:10,color:"#9ca3af",textTransform:"uppercase",letterSpacing:".08em",marginTop:3}}>{l}</div></div>
+                ))}
+              </div>
+            </div>
+            <div style={{flexShrink:0,position:"relative",width:320}}>
+              <div style={{position:"absolute",top:-14,right:-14,width:"100%",height:"100%",border:`2px solid rgba(139,0,0,.2)`}}/>
+              <div style={{position:"relative",zIndex:1,overflow:"hidden",height:480}}>
+                <img src={IMG.p1} alt="Bc. Kateřina Kerplová" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block"}}/>
+                <div style={{position:"absolute",bottom:0,left:0,right:0,background:"linear-gradient(transparent,rgba(0,0,0,.8))",padding:"28px 18px 18px"}}>
+                  <div style={{color:"white",fontWeight:700,fontSize:15,...ser}}>Bc. Kateřina Kerplová</div>
+                  <div style={{color:"rgba(255,255,255,.62)",fontSize:12,marginTop:2,...sf}}>Hlavní účetní</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* WHY ME */}
+      <section style={{background:"#f9fafb",borderBottom:"1px solid #e5e7eb",padding:mob?"40px 0":"56px 0"}}>
+        <div style={{maxWidth:1152,margin:"0 auto",padding:`0 ${mob?20:32}px`,display:"grid",gridTemplateColumns:mob?"1fr 1fr":"repeat(4,1fr)",gap:mob?24:36}}>
+          {[["lightbulb","Individuální přístup","Každý klient je jiný. Řešení tvoříme přímo na míru."],
+            ["chat","Srozumitelná komunikace","Žádný žargon. Vše vysvětlíme lidsky a jasně."],
+            ["shield","Spolehlivost","Termíny dodržujeme. Na nic nezapomeneme. Vždy dostupní."],
+            ["users","Online i osobně","Spolupracujeme s klienty z celé ČR bez omezení."],
+          ].map(([icon,t,d])=>(
+            <div key={t} style={{textAlign:"center"}}>
+              <div style={{width:44,height:44,background:"rgba(139,0,0,.07)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 14px"}}>
+                <Icon name={icon} size={20} color={RED} sw={1.5}/>
+              </div>
+              <h4 style={{fontWeight:700,color:"#111",fontSize:mob?13:14,margin:"0 0 7px",...ser}}>{t}</h4>
+              <p style={{color:"#6b7280",fontSize:mob?12:13,lineHeight:1.6,margin:0,...sf}}>{d}</p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -365,8 +434,8 @@ export default function KKFintax() {
       <section id="services" style={{padding:mob?"56px 0":"88px 0",background:"white"}}>
         <div style={{maxWidth:1152,margin:"0 auto",padding:`0 ${mob?20:32}px`}}>
           <p style={{fontSize:11,color:RED,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",marginBottom:12,...sf}}>Služby</p>
-          <h2 style={{fontSize:mob?28:38,fontWeight:700,color:"#111",margin:"0 0 14px"}}>Co pro vás mohu udělat</h2>
-          <p style={{color:"#6b7280",maxWidth:520,marginBottom:40,lineHeight:1.65,fontSize:15,...sf}}>Komplexní účetní služby pro OSVČ i s.r.o. — od každodenní evidence po zastupování před finančním úřadem.</p>
+          <h2 style={{fontSize:mob?28:38,fontWeight:700,color:"#111",margin:"0 0 14px"}}>Čím se zabýváme</h2>
+          <p style={{color:"#6b7280",maxWidth:520,marginBottom:40,lineHeight:1.65,fontSize:15,...sf}}>Komplexní účetní služby pro OSVČ, s.r.o. i neziskové organizace — od každodenní evidence po zastupování před finančním úřadem.</p>
           <div style={{display:"grid",gridTemplateColumns:mob?"1fr":w<1024?"1fr 1fr":"repeat(3,1fr)",gap:16}}>
             {SERVICES.map(({icon,title,desc})=>(
               <div key={title} style={{border:"1px solid #e5e7eb",padding:mob?20:26,transition:"all .2s",cursor:"default"}}
@@ -381,59 +450,6 @@ export default function KKFintax() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ABOUT */}
-      <section id="about" style={{padding:mob?"56px 0":"88px 0",background:"white"}}>
-        <div style={{maxWidth:1152,margin:"0 auto",padding:`0 ${mob?20:32}px`,display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:mob?40:88,alignItems:"center"}}>
-          <div style={{position:"relative"}}>
-            <div style={{overflow:"hidden",height:mob?300:540}}>
-              <img src={IMG.p4} alt="Bc. Kateřina Kerplová" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block"}}/>
-            </div>
-            <div style={{position:"absolute",bottom:mob?-12:-18,right:mob?-8:-18,width:mob?100:148,height:mob?100:148,background:RED,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
-              <span style={{fontSize:mob?28:42,fontWeight:700,color:"white",lineHeight:1,...ser}}>8+</span>
-              <span style={{fontSize:9,color:"rgba(255,255,255,.6)",textTransform:"uppercase",letterSpacing:".08em",marginTop:4,...sf}}>let praxe</span>
-            </div>
-          </div>
-          <div>
-            <p style={{fontSize:11,color:RED,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",marginBottom:12,...sf}}>O mně</p>
-            <h2 style={{fontSize:mob?28:38,fontWeight:700,color:"#111",margin:"0 0 24px",lineHeight:1.18}}>Bc. Kateřina<br/>Kerplová</h2>
-            <div style={{color:"#4b5563",lineHeight:1.78,fontSize:14,...sf}}>
-              <p style={{marginTop:0}}>Účetnictvím se zabývám přes 8 let. Vystudovala jsem Obchodní akademii v Olomouci a obchodně-podnikatelskou školu v Opavě — již během studia jsem sbírala praxi jako pomocná účetní v různých firmách po celé ČR.</p>
-              <p>Od roku 2020 se účetnictví věnuji naplno. Od května 2021 pracuji jako hlavní účetní a mzdová účetní, kde působím dodnes. Zkušenosti mám i z neziskového sektoru.</p>
-              <p>Věřím, že účetnictví nemusí být jen „nutné zlo" — může být oporou pro vaše podnikání.</p>
-              <p style={{fontWeight:600,color:"#1f2937"}}>Moje vize: stát se daňovým poradcem a nabídnout komplexnější servis.</p>
-            </div>
-            <div style={{display:"flex",flexWrap:"wrap",gap:7,margin:"22px 0 28px"}}>
-              {["Vedení účetnictví","Mzdová účetní","Neziskový sektor","Online spolupráce","Individuální přístup"].map(t=>(
-                <span key={t} style={{padding:"4px 11px",fontSize:12,fontWeight:600,background:"rgba(139,0,0,.08)",color:RED,...sf}}>{t}</span>
-              ))}
-            </div>
-            <div style={{display:"flex",gap:12,flexWrap:"wrap"}}>
-              <Btn variant="primary" onClick={()=>go("booking")}>Rezervovat schůzku <Icon name="arrow" size={14} sw={2}/></Btn>
-              <Btn variant="outline" onClick={()=>go("quote")}>Cenová nabídka</Btn>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* WHY ME */}
-      <section style={{background:RED,padding:mob?"48px 0":"64px 0"}}>
-        <div style={{maxWidth:1152,margin:"0 auto",padding:`0 ${mob?20:32}px`,display:"grid",gridTemplateColumns:mob?"1fr 1fr":"repeat(4,1fr)",gap:mob?24:36}}>
-          {[["lightbulb","Individuální přístup","Každý klient je jiný. Řešení šiji přímo na míru."],
-            ["chat","Srozumitelná komunikace","Žádný žargon. Vše vysvětlím lidsky a jasně."],
-            ["shield","Spolehlivost","Termíny dodržuji. Nic nezapomenu. Vždy dostupná."],
-            ["users","Online i osobně","Spolupracuji s klienty z celé ČR bez omezení."],
-          ].map(([icon,t,d])=>(
-            <div key={t} style={{textAlign:"center"}}>
-              <div style={{width:44,height:44,border:"1.5px solid rgba(255,255,255,.25)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 14px"}}>
-                <Icon name={icon} size={20} color="rgba(255,255,255,.85)" sw={1.5}/>
-              </div>
-              <h4 style={{fontWeight:700,color:"white",fontSize:mob?13:14,margin:"0 0 7px",...ser}}>{t}</h4>
-              <p style={{color:"rgba(255,255,255,.6)",fontSize:mob?12:13,lineHeight:1.6,margin:0,...sf}}>{d}</p>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -467,7 +483,7 @@ export default function KKFintax() {
 
       {/* BOOKING */}
       <section id="booking" style={{padding:mob?"56px 0":"88px 0",background:"white",borderTop:"1px solid #e5e7eb"}}>
-        <div style={{maxWidth:1152,margin:"0 auto",padding:`0 ${mob?20:32}px`}}>
+        <div style={{maxWidth:720,margin:"0 auto",padding:`0 ${mob?20:32}px`}}>
           <p style={{fontSize:11,color:RED,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",marginBottom:12,...sf}}>Konzultace</p>
           <h2 style={{fontSize:mob?28:38,fontWeight:700,color:"#111",margin:"0 0 32px"}}>Naplánujte si schůzku</h2>
           <BookingPicker mob={mob}/>
@@ -479,9 +495,42 @@ export default function KKFintax() {
         <div style={{maxWidth:720,margin:"0 auto",padding:`0 ${mob?20:32}px`}}>
           <p style={{fontSize:11,color:RED,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",marginBottom:12,...sf}}>Poptávka</p>
           <h2 style={{fontSize:mob?28:38,fontWeight:700,color:"#111",margin:"0 0 12px"}}>Získejte cenovou nabídku</h2>
-          <p style={{color:"#6b7280",fontSize:15,marginBottom:32,...sf}}>Vyplňte formulář a do 24 hodin připravím nabídku přímo na míru.</p>
+          <p style={{color:"#6b7280",fontSize:15,marginBottom:32,...sf}}>Vyplňte formulář a do 24 hodin připravíme nabídku přímo na míru.</p>
           <div style={{background:"white",border:"1px solid #e5e7eb",padding:mob?20:40}}>
             <QuoteForm mob={mob}/>
+          </div>
+        </div>
+      </section>
+
+      {/* ABOUT */}
+      <section id="about" style={{padding:mob?"56px 0":"88px 0",background:"white",borderTop:"1px solid #e5e7eb"}}>
+        <div style={{maxWidth:1152,margin:"0 auto",padding:`0 ${mob?20:32}px`,display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:mob?40:88,alignItems:"center"}}>
+          <div style={{position:"relative"}}>
+            <div style={{overflow:"hidden",height:mob?300:540}}>
+              <img src={IMG.p4} alt="Bc. Kateřina Kerplová" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block"}}/>
+            </div>
+            <div style={{position:"absolute",bottom:mob?-12:-18,right:mob?-8:-18,width:mob?100:148,height:mob?100:148,background:RED,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+              <span style={{fontSize:mob?28:42,fontWeight:700,color:"white",lineHeight:1,...ser}}>8+</span>
+              <span style={{fontSize:9,color:"rgba(255,255,255,.6)",textTransform:"uppercase",letterSpacing:".08em",marginTop:4,...sf}}>let praxe</span>
+            </div>
+          </div>
+          <div>
+            <p style={{fontSize:11,color:RED,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",marginBottom:12,...sf}}>O nás</p>
+            <h2 style={{fontSize:mob?28:38,fontWeight:700,color:"#111",margin:"0 0 24px",lineHeight:1.18}}>Bc. Kateřina<br/>Kerplová</h2>
+            <div style={{color:"#4b5563",lineHeight:1.78,fontSize:14,...sf}}>
+              <p style={{marginTop:0}}>Bc. Kateřina Kerplová působí jako <strong style={{color:"#1f2937"}}>hlavní účetní a mzdová účetní</strong>. Účetnictvím se zabývá přes 8 let — zkušenosti sbírala ve firmách po celé ČR i v neziskovém sektoru.</p>
+              <p>Od roku 2020 se věnuje účetnictví naplno. Vystudovala Obchodní akademii v Olomouci a obchodně-podnikatelskou školu v Opavě.</p>
+              <p>Věříme, že účetnictví nemusí být jen „nutné zlo" — může být spolehlivou oporou pro vaše podnikání.</p>
+            </div>
+            <div style={{display:"flex",flexWrap:"wrap",gap:7,margin:"22px 0 28px"}}>
+              {["Vedení účetnictví","Mzdové účetnictví","Neziskový sektor","Online spolupráce","Individuální přístup"].map(t=>(
+                <span key={t} style={{padding:"4px 11px",fontSize:12,fontWeight:600,background:"rgba(139,0,0,.08)",color:RED,...sf}}>{t}</span>
+              ))}
+            </div>
+            <div style={{display:"flex",gap:12,flexWrap:"wrap"}}>
+              <Btn variant="primary" onClick={()=>go("booking")}>Rezervovat schůzku <Icon name="arrow" size={14} sw={2}/></Btn>
+              <Btn variant="outline" onClick={()=>go("quote")}>Cenová nabídka</Btn>
+            </div>
           </div>
         </div>
       </section>
@@ -491,11 +540,11 @@ export default function KKFintax() {
         <div style={{maxWidth:1152,margin:"0 auto",padding:`0 ${mob?20:32}px`,display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:mob?40:64,alignItems:"start"}}>
           <div>
             <img src={IMG.logo} alt="KKFintax" style={{height:40,objectFit:"contain",marginBottom:20,maxWidth:180,display:"block",filter:"brightness(0) invert(1)"}}/>
-            <p style={{color:"rgba(255,255,255,.5)",lineHeight:1.72,fontSize:14,maxWidth:340,marginBottom:32,...sf}}>Spolehlivá účetní s individuálním přístupem. Ozvěte se — ráda připravím nabídku na míru.</p>
+            <p style={{color:"rgba(255,255,255,.5)",lineHeight:1.72,fontSize:14,maxWidth:340,marginBottom:32,...sf}}>Účetnictví se věnujeme naplno. Ozvěte se — rádi připravíme nabídku na míru.</p>
             <Btn variant="white" size={mob?"md":"lg"} onClick={()=>go("booking")}>Naplánovat schůzku <Icon name="arrow" size={16} sw={2}/></Btn>
           </div>
           <div style={{display:"flex",flexDirection:"column",gap:mob?16:22,...sf}}>
-            {[["phone","Telefon","605 326 088"],["mail","E-mail","info@kkfintax.cz"],["location","Působiště","Praha & celá ČR (online)"],["clock","Dostupnost","Po–Pá 8:00–18:00"]].map(([icon,label,val])=>(
+            {[["phone","Telefon","605 326 088"],["mail","E-mail","info@kkfintax.cz"],["location","Působiště","Litovel & celá ČR (online)"],["clock","Dostupnost","Po–Pá 8:00–18:00"]].map(([icon,label,val])=>(
               <div key={label} style={{display:"flex",alignItems:"center",gap:14}}>
                 <div style={{width:40,height:40,background:"rgba(255,255,255,.07)",border:"1px solid rgba(255,255,255,.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
                   <Icon name={icon} size={19} color="rgba(255,255,255,.6)" sw={1.5}/>

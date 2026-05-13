@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "KKFintax — Bc. Kateřina Kerplová | Účetní služby Praha",
-  description: "Certifikovaná účetní s více než 8 lety praxe. Vedení účetnictví, daňová evidence, DPH a mzdové účetnictví pro OSVČ i s.r.o. Praha a celá ČR online.",
+  title: "KKFintax — Bc. Kateřina Kerplová | Účetní služby Litovel & ČR",
+  description: "Vedení účetnictví, daňová evidence, DPH a mzdové účetnictví pro OSVČ i s.r.o. Litovel a celá ČR online.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
