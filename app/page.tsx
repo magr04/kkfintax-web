@@ -291,21 +291,6 @@ function QuoteForm({ mob }: { mob: boolean }) {
   );
 }
 
-function FloatingCTA({ onClick }: { onClick: () => void }) {
-  const [vis, setVis] = useState(false);
-  useEffect(() => {
-    const h = () => setVis(window.scrollY > 400);
-    window.addEventListener("scroll", h);
-    return () => window.removeEventListener("scroll", h);
-  }, []);
-  return (
-    <div style={{position:"fixed",bottom:24,right:24,zIndex:100,transition:"opacity .3s,transform .3s",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",pointerEvents:vis?"auto":"none"}}>
-      <button onClick={onClick} style={{display:"flex",alignItems:"center",gap:10,background:RED,color:"white",border:"none",padding:"13px 22px",cursor:"pointer",...sf,fontWeight:700,fontSize:14,boxShadow:"0 4px 20px rgba(139,0,0,.4)"}}>
-        <Icon name="calendar" size={16} color="white" sw={2}/> Rezervovat schůzku
-      </button>
-    </div>
-  );
-}
 
 export default function KKFintax() {
   const w = useW();
@@ -314,7 +299,6 @@ export default function KKFintax() {
 
   return (
     <div style={{margin:0,padding:0,background:"#fff",...ser}}>
-      <FloatingCTA onClick={()=>go("booking")}/>
 
       {/* NAV */}
       <nav style={{position:"sticky",top:0,zIndex:50,background:"white",borderBottom:"1px solid #e5e7eb",boxShadow:"0 1px 8px rgba(0,0,0,.06)"}}>
