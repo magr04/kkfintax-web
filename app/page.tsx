@@ -293,11 +293,22 @@ function QuoteForm({ mob }: { mob: boolean }) {
 
 function FloatingCTA({ onClick }: { onClick: () => void }) {
   const [vis, setVis] = useState(false);
+  const mob = useW() < 768;
   useEffect(() => {
     const h = () => setVis(window.scrollY > 400);
     window.addEventListener("scroll", h);
     return () => window.removeEventListener("scroll", h);
   }, []);
+  if (mob) return (
+    <div style={{position:"fixed",bottom:0,left:0,right:0,zIndex:100,display:"flex",transition:"opacity .3s,transform .3s",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(100%)",pointerEvents:vis?"auto":"none",boxShadow:"0 -2px 16px rgba(0,0,0,.12)"}}>
+      <button onClick={onClick} style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:8,background:RED,color:"white",border:"none",padding:"16px 12px",cursor:"pointer",...sf,fontWeight:700,fontSize:13}}>
+        <Icon name="calendar" size={15} color="white" sw={2}/> Schůzka
+      </button>
+      <button onClick={()=>document.getElementById("quote")?.scrollIntoView({behavior:"smooth"})} style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:8,background:"white",color:RED,border:"none",borderLeft:`1px solid #e5e7eb`,padding:"16px 12px",cursor:"pointer",...sf,fontWeight:700,fontSize:13}}>
+        <Icon name="document" size={15} color={RED} sw={2}/> Cenová nabídka
+      </button>
+    </div>
+  );
   return (
     <div style={{position:"fixed",bottom:24,right:24,zIndex:100,display:"flex",flexDirection:"column",gap:10,transition:"opacity .3s,transform .3s",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",pointerEvents:vis?"auto":"none"}}>
       <button onClick={onClick} style={{display:"flex",alignItems:"center",gap:10,background:RED,color:"white",border:"none",padding:"13px 22px",cursor:"pointer",...sf,fontWeight:700,fontSize:14,boxShadow:"0 4px 20px rgba(139,0,0,.4)"}}>
